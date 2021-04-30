@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package utiles;
 
-/**
- *
- * @author XPC
- */
+//Enum con las distintas opciones de las variables
 public enum Opciones {
     //Opciones sincronizacion
     SEND_BLOCK ("Blocking"),

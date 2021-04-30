@@ -16,8 +16,11 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.turn_off_options(dir_indirecto_ops);
-        this.turn_off_options(dir_indirecto_ops);
         this.turn_off_options(form_largo_opc);
+        this.turn_off_options(disciplina_label);
+        this.turn_off_options(manejocolas_opciones);
+        this.turn_off_options(tamano_cola_label);
+        this.turn_off_options(tamano_cola);
     }
     
     //Funcion encargada de deshabilitar componentes y hacerlos invisibles
@@ -46,8 +49,8 @@ public class Configuracion_view extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         direcc_cb2 = new javax.swing.JCheckBox();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        disciplina_label = new javax.swing.JLabel();
+        tamano_cola_label = new javax.swing.JLabel();
         direccion_opciones = new javax.swing.JComboBox<>();
         manejocolas_opciones = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
@@ -108,15 +111,15 @@ public class Configuracion_view extends javax.swing.JFrame {
         });
         jPanel1.add(direcc_cb2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 130, -1));
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("Disciplina de manejo de colas");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 30, 220, 30));
+        disciplina_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        disciplina_label.setForeground(new java.awt.Color(0, 0, 0));
+        disciplina_label.setText("Disciplina de manejo de colas");
+        jPanel1.add(disciplina_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 30, 220, 30));
 
-        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Tamaño de la cola: ");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 140, 30));
+        tamano_cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        tamano_cola_label.setForeground(new java.awt.Color(0, 0, 0));
+        tamano_cola_label.setText("Tamaño de la cola: ");
+        jPanel1.add(tamano_cola_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 140, 30));
 
         direccion_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Directo", "Indirecto" }));
         direccion_opciones.addActionListener(new java.awt.event.ActionListener() {
@@ -304,9 +307,17 @@ public class Configuracion_view extends javax.swing.JFrame {
                 this.turn_on_options(lable_receive);
                 this.turn_on_options(label_send);
                 this.turn_off_options(dir_indirecto_ops);
+                this.turn_off_options(disciplina_label);
+                this.turn_off_options(manejocolas_opciones);
+                this.turn_off_options(tamano_cola_label);
+                this.turn_off_options(tamano_cola);
             }
             else if(element == "Indirecto"){
                this.turn_on_options(dir_indirecto_ops);
+               this.turn_on_options(disciplina_label);
+               this.turn_on_options(manejocolas_opciones);
+               this.turn_on_options(tamano_cola_label);
+               this.turn_on_options(tamano_cola);
                this.turn_off_options(direcc_cb3);
                this.turn_off_options(direcc_cb2);
                this.turn_off_options(lable_receive);
@@ -338,10 +349,12 @@ public class Configuracion_view extends javax.swing.JFrame {
 
     private void crear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_btnActionPerformed
         int procesos = Integer.parseInt(cantidad_procesos.getText());
-        this.dispose();
+        this.sincr_send = sincro_send_options.getSelectedItem().toString();
+        this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
         this.configurador.setConfig(this.sincr_receive, this.sincr_send, 
                 procesos);
         this.configurador.create();
+        this.dispose();
         Principal_view principal_v = new Principal_view(configurador);
         principal_v.setVisible(true);
     }//GEN-LAST:event_crear_btnActionPerformed
@@ -397,6 +410,7 @@ public class Configuracion_view extends javax.swing.JFrame {
     public javax.swing.JCheckBox direcc_cb2;
     public javax.swing.JCheckBox direcc_cb3;
     private javax.swing.JComboBox<String> direccion_opciones;
+    private javax.swing.JLabel disciplina_label;
     private javax.swing.JComboBox<String> form_largo_opc;
     private javax.swing.JComboBox<String> formato_opciones1;
     private javax.swing.JFrame jFrame1;
@@ -405,9 +419,7 @@ public class Configuracion_view extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -421,5 +433,6 @@ public class Configuracion_view extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> sincro_receive_options;
     private javax.swing.JComboBox<String> sincro_send_options;
     private javax.swing.JTextField tamano_cola;
+    private javax.swing.JLabel tamano_cola_label;
     // End of variables declaration//GEN-END:variables
 }

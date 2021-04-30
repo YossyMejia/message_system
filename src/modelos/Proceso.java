@@ -5,31 +5,13 @@ import java.util.ArrayList;
 
 public class Proceso {
     
-    private String send_block_type;
-    private String receive_block_type;
     private Boolean blocked;
-    private ArrayList<String> mensajes_leidos = new ArrayList<String>();    //TODO: Hacer que sea de tipo mensaje
+    private ArrayList<String> mensajes_leidos = new ArrayList<String>();    //TODO: Hacer que sea de tipo mensaje el arraylist no tipo string
     private ArrayList<String> mensajes_enviados = new ArrayList<String>();
     private String proces_id;
 
     public Proceso(String id) {
         this.proces_id = id;
-    }
-
-    public String getSend_block_type() {
-        return send_block_type;
-    }
-
-    public void setSend_block_type(String send_block_type) {
-        this.send_block_type = send_block_type;
-    }
-
-    public String getReceive_block_type() {
-        return receive_block_type;
-    }
-
-    public void setReceive_block_type(String receive_block_type) {
-        this.receive_block_type = receive_block_type;
     }
 
     public Boolean getBlocked() {
