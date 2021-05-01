@@ -1,26 +1,27 @@
 package vistas;
 
-import utiles.Configurador;
+import utiles.ProcessController;
 
 public class Configuracion_view extends javax.swing.JFrame {
     
-     Configurador configurador;
+     ProcessController configurador;
      private String sincr_send;
      private String sincr_receive;
      
      
     public Configuracion_view() {
         
-        this.configurador = new Configurador();
+        this.configurador = new ProcessController();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.turn_off_options(dir_indirecto_ops);
-        this.turn_off_options(form_largo_opc);
         this.turn_off_options(disciplina_label);
         this.turn_off_options(manejocolas_opciones);
         this.turn_off_options(tamano_cola_label);
         this.turn_off_options(tamano_cola);
+        this.turn_off_options(cantidad_mailbox_label);
+        this.turn_off_options(cantidad_mailbox);
     }
     
     //Funcion encargada de deshabilitar componentes y hacerlos invisibles
@@ -50,16 +51,15 @@ public class Configuracion_view extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         direcc_cb2 = new javax.swing.JCheckBox();
         disciplina_label = new javax.swing.JLabel();
-        tamano_cola_label = new javax.swing.JLabel();
+        cantidad_mailbox_label = new javax.swing.JLabel();
         direccion_opciones = new javax.swing.JComboBox<>();
         manejocolas_opciones = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         dir_indirecto_ops = new javax.swing.JComboBox<>();
         sincro_send_options = new javax.swing.JComboBox<>();
-        form_largo_opc = new javax.swing.JComboBox<>();
+        form_largo_opciones = new javax.swing.JComboBox<>();
         direcc_cb3 = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
-        formato_opciones1 = new javax.swing.JComboBox<>();
         lable_receive = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         tamano_cola = new javax.swing.JTextField();
@@ -70,11 +70,14 @@ public class Configuracion_view extends javax.swing.JFrame {
         label_send = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        tamano_cola_label = new javax.swing.JLabel();
+        cantidad_mailbox = new javax.swing.JTextField();
+        label_largo = new javax.swing.JLabel();
+        label_contenido1 = new javax.swing.JLabel();
+        contenido_opciones = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        menu_ayuda = new javax.swing.JMenu();
-        ayuda_definiciones = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -116,10 +119,10 @@ public class Configuracion_view extends javax.swing.JFrame {
         disciplina_label.setText("Disciplina de manejo de colas");
         jPanel1.add(disciplina_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 30, 220, 30));
 
-        tamano_cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        tamano_cola_label.setForeground(new java.awt.Color(0, 0, 0));
-        tamano_cola_label.setText("Tamaño de la cola: ");
-        jPanel1.add(tamano_cola_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, 140, 30));
+        cantidad_mailbox_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cantidad_mailbox_label.setForeground(new java.awt.Color(0, 0, 0));
+        cantidad_mailbox_label.setText("Cantidad de mailbox: ");
+        jPanel1.add(cantidad_mailbox_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 160, 30));
 
         direccion_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Directo", "Indirecto" }));
         direccion_opciones.addActionListener(new java.awt.event.ActionListener() {
@@ -153,8 +156,8 @@ public class Configuracion_view extends javax.swing.JFrame {
         });
         jPanel1.add(sincro_send_options, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 140, 30));
 
-        form_largo_opc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Variable" }));
-        jPanel1.add(form_largo_opc, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 110, 140, 30));
+        form_largo_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Variable" }));
+        jPanel1.add(form_largo_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 170, 140, 30));
 
         direcc_cb3.setBackground(new java.awt.Color(153, 153, 153));
         direcc_cb3.setForeground(new java.awt.Color(0, 0, 0));
@@ -170,14 +173,6 @@ public class Configuracion_view extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Formato");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 140, 30));
-
-        formato_opciones1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Contenido", "Largo" }));
-        formato_opciones1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                formato_opciones1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(formato_opciones1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 70, 140, 30));
 
         lable_receive.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         lable_receive.setForeground(new java.awt.Color(0, 0, 0));
@@ -241,6 +236,32 @@ public class Configuracion_view extends javax.swing.JFrame {
         jLabel14.setText("Receive");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 110, 30));
 
+        tamano_cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        tamano_cola_label.setForeground(new java.awt.Color(0, 0, 0));
+        tamano_cola_label.setText("Tamaño de la cola: ");
+        jPanel1.add(tamano_cola_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 140, 30));
+
+        cantidad_mailbox.setText("1");
+        cantidad_mailbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cantidad_mailboxActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cantidad_mailbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 520, 260, 30));
+
+        label_largo.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        label_largo.setForeground(new java.awt.Color(0, 0, 0));
+        label_largo.setText("Largo");
+        jPanel1.add(label_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 140, 110, 30));
+
+        label_contenido1.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        label_contenido1.setForeground(new java.awt.Color(0, 0, 0));
+        label_contenido1.setText("Contenido");
+        jPanel1.add(label_contenido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 110, 30));
+
+        contenido_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Texto", "Binario" }));
+        jPanel1.add(contenido_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 100, 140, 30));
+
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 1020, 780));
 
         jLabel1.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto_1\\src\\Imagenes\\fondo.jpg")); // NOI18N
@@ -251,18 +272,6 @@ public class Configuracion_view extends javax.swing.JFrame {
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
-
-        menu_ayuda.setText("Ayuda");
-
-        ayuda_definiciones.setText("Explicacion de conceptos");
-        ayuda_definiciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ayuda_definicionesActionPerformed(evt);
-            }
-        });
-        menu_ayuda.add(ayuda_definiciones);
-
-        jMenuBar1.add(menu_ayuda);
 
         setJMenuBar(jMenuBar1);
 
@@ -311,12 +320,16 @@ public class Configuracion_view extends javax.swing.JFrame {
                 this.turn_off_options(manejocolas_opciones);
                 this.turn_off_options(tamano_cola_label);
                 this.turn_off_options(tamano_cola);
+                this.turn_off_options(cantidad_mailbox_label);
+                this.turn_off_options(cantidad_mailbox);
             }
             else if(element == "Indirecto"){
                this.turn_on_options(dir_indirecto_ops);
                this.turn_on_options(disciplina_label);
                this.turn_on_options(manejocolas_opciones);
                this.turn_on_options(tamano_cola_label);
+               this.turn_on_options(cantidad_mailbox_label);
+               this.turn_on_options(cantidad_mailbox);
                this.turn_on_options(tamano_cola);
                this.turn_off_options(direcc_cb3);
                this.turn_off_options(direcc_cb2);
@@ -326,18 +339,6 @@ public class Configuracion_view extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_direccion_opcionesActionPerformed
-
-    private void formato_opciones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_formato_opciones1ActionPerformed
-        String element = formato_opciones1.getSelectedItem().toString();
-        if (element != null) {
-            if(element == "Contenido"){
-                this.turn_off_options(form_largo_opc);
-            }
-            else if(element == "Largo"){
-               this.turn_on_options(form_largo_opc);
-            }
-        }
-    }//GEN-LAST:event_formato_opciones1ActionPerformed
 
     private void tamano_colaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tamano_colaActionPerformed
         // TODO add your handling code here:
@@ -359,13 +360,13 @@ public class Configuracion_view extends javax.swing.JFrame {
         principal_v.setVisible(true);
     }//GEN-LAST:event_crear_btnActionPerformed
 
-    private void ayuda_definicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayuda_definicionesActionPerformed
-        
-    }//GEN-LAST:event_ayuda_definicionesActionPerformed
-
     private void sincro_receive_optionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sincro_receive_optionsActionPerformed
          this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
     }//GEN-LAST:event_sincro_receive_optionsActionPerformed
+
+    private void cantidad_mailboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cantidad_mailboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cantidad_mailboxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -403,16 +404,17 @@ public class Configuracion_view extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem ayuda_definiciones;
+    private javax.swing.JTextField cantidad_mailbox;
+    private javax.swing.JLabel cantidad_mailbox_label;
     private javax.swing.JTextField cantidad_procesos;
+    private javax.swing.JComboBox<String> contenido_opciones;
     public javax.swing.JButton crear_btn;
     private javax.swing.JComboBox<String> dir_indirecto_ops;
     public javax.swing.JCheckBox direcc_cb2;
     public javax.swing.JCheckBox direcc_cb3;
     private javax.swing.JComboBox<String> direccion_opciones;
     private javax.swing.JLabel disciplina_label;
-    private javax.swing.JComboBox<String> form_largo_opc;
-    private javax.swing.JComboBox<String> formato_opciones1;
+    private javax.swing.JComboBox<String> form_largo_opciones;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -426,10 +428,11 @@ public class Configuracion_view extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel label_contenido1;
+    private javax.swing.JLabel label_largo;
     private javax.swing.JLabel label_send;
     private javax.swing.JLabel lable_receive;
     private javax.swing.JComboBox<String> manejocolas_opciones;
-    private javax.swing.JMenu menu_ayuda;
     private javax.swing.JComboBox<String> sincro_receive_options;
     private javax.swing.JComboBox<String> sincro_send_options;
     private javax.swing.JTextField tamano_cola;

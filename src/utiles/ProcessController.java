@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import modelos.Proceso;
 
 
-public class Configurador {
+public class ProcessController {
     
     //Variables
     private int cantidad_procesos;
     private String sincr_receive_opt;
     private String sincr_send_opt;
     private ArrayList<Proceso> procesos = new ArrayList<Proceso>();
-    public Configurador() {
+    public ProcessController() {
         
     }
     
