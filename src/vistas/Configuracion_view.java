@@ -2,6 +2,8 @@ package vistas;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.ToolTipManager;
+import utiles.Help_messages;
 import utiles.ProcessController;
 
 public class Configuracion_view extends javax.swing.JFrame {
@@ -15,6 +17,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         
         this.configurador = new ProcessController();
         initComponents();
+        this.setHelp();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.turn_off_options(dir_indirecto_ops);
@@ -24,7 +27,12 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.turn_off_options(tamano_cola);
         this.turn_off_options(cantidad_mailbox_label);
         this.turn_off_options(cantidad_mailbox);
-        this.setHelpMessages();
+        
+        //Haciendo invisibles los botones de ayuda 
+        this.queueDisc_help_button.setVisible(false);
+        this.tam_cola_help.setVisible(false);
+        this.cant_mailbox_help.setVisible(false);
+        this.direcc_indirect_help_button.setVisible(false);
     }
     
     //Funcion encargada de deshabilitar componentes y hacerlos invisibles
@@ -39,10 +47,24 @@ public class Configuracion_view extends javax.swing.JFrame {
         element.setEnabled(true);
     }
     
-    public void setHelpMessages(){
-        
-        send_help_button.setToolTipText("Se definen los bla bla bla....");
-        send_help_button.setEnabled(false);
+    public void setHelp(){
+        this.setHelpMessage(send_help_button, Help_messages.SINCRONIZATION_SEND.message);
+        this.setHelpMessage(send_help_button2, Help_messages.SINCRONIZATION_RECEIVE.message);
+        this.setHelpMessage(format_help_button, Help_messages.FORMAT_CONTENT.message);
+        this.setHelpMessage(format_help_button2, Help_messages.FORMAT_LENGHT.message);
+        this.setHelpMessage(queueDisc_help_button, Help_messages.QUEQUE_DISCIPLINE.message);
+        this.setHelpMessage(cant_proc_help, Help_messages.PROCESS_QUANTITY.message);
+        this.setHelpMessage(tam_cola_help, Help_messages.QUEUE_SIZE.message);
+        this.setHelpMessage(cant_mailbox_help, Help_messages.MAILBOX_QUANTITY.message);
+        this.setHelpMessage(direcc_help_button, Help_messages.ADDRESSING_TYPE.message);
+        this.setHelpMessage(direcc_receive_help_button, Help_messages.ADDRESSING_RECEIEVE.message);
+        this.setHelpMessage(direcc_indirect_help_button, Help_messages.ADDRESSING_INDIRECT.message);
+    }
+    
+    public void setHelpMessage(javax.swing.JComponent element, String message){
+        ToolTipManager.sharedInstance().setDismissDelay(60000);
+        element.setToolTipText(message);
+        element.setEnabled(false);
     }
     
     
@@ -83,6 +105,16 @@ public class Configuracion_view extends javax.swing.JFrame {
         label_cantidad_caracteres = new javax.swing.JLabel();
         cantidad_caracteres = new javax.swing.JTextField();
         send_help_button = new javax.swing.JButton();
+        send_help_button2 = new javax.swing.JButton();
+        format_help_button = new javax.swing.JButton();
+        format_help_button2 = new javax.swing.JButton();
+        queueDisc_help_button = new javax.swing.JButton();
+        cant_proc_help = new javax.swing.JButton();
+        tam_cola_help = new javax.swing.JButton();
+        cant_mailbox_help = new javax.swing.JButton();
+        direcc_help_button = new javax.swing.JButton();
+        direcc_receive_help_button = new javax.swing.JButton();
+        direcc_indirect_help_button = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -120,17 +152,17 @@ public class Configuracion_view extends javax.swing.JFrame {
                 direcc_cb2ActionPerformed(evt);
             }
         });
-        jPanel1.add(direcc_cb2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, 130, -1));
+        jPanel1.add(direcc_cb2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 230, 130, -1));
 
         disciplina_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         disciplina_label.setForeground(new java.awt.Color(0, 0, 0));
         disciplina_label.setText("Disciplina de manejo de colas");
-        jPanel1.add(disciplina_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 30, 220, 30));
+        jPanel1.add(disciplina_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 30, 220, 30));
 
         cantidad_mailbox_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         cantidad_mailbox_label.setForeground(new java.awt.Color(0, 0, 0));
         cantidad_mailbox_label.setText("Cantidad de mailbox: ");
-        jPanel1.add(cantidad_mailbox_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 520, 160, 30));
+        jPanel1.add(cantidad_mailbox_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 550, 160, 30));
 
         direccion_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Directo", "Indirecto" }));
         direccion_opciones.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +173,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         jPanel1.add(direccion_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, 140, 30));
 
         manejocolas_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FIFO", "Prioridad" }));
-        jPanel1.add(manejocolas_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 70, 140, 30));
+        jPanel1.add(manejocolas_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 70, 140, 30));
 
         jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
@@ -154,7 +186,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 dir_indirecto_opsActionPerformed(evt);
             }
         });
-        jPanel1.add(dir_indirecto_ops, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 140, 30));
+        jPanel1.add(dir_indirecto_ops, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 120, 140, 30));
 
         sincro_send_options.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blocking", "Nonblocking" }));
         sincro_send_options.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +194,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 sincro_send_optionsActionPerformed(evt);
             }
         });
-        jPanel1.add(sincro_send_options, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 140, 30));
+        jPanel1.add(sincro_send_options, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 120, 140, 30));
 
         form_largo_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fijo", "Variable" }));
         form_largo_opciones.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +202,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 form_largo_opcionesActionPerformed(evt);
             }
         });
-        jPanel1.add(form_largo_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 170, 140, 30));
+        jPanel1.add(form_largo_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 200, 140, 30));
 
         direcc_cb3.setBackground(new java.awt.Color(153, 153, 153));
         direcc_cb3.setForeground(new java.awt.Color(0, 0, 0));
@@ -180,22 +212,22 @@ public class Configuracion_view extends javax.swing.JFrame {
                 direcc_cb3ActionPerformed(evt);
             }
         });
-        jPanel1.add(direcc_cb3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 170, 130, -1));
+        jPanel1.add(direcc_cb3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 130, -1));
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Formato");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 30, 140, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 30, 140, 30));
 
         lable_receive.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         lable_receive.setForeground(new java.awt.Color(0, 0, 0));
         lable_receive.setText("Receive");
-        jPanel1.add(lable_receive, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 140, 110, 30));
+        jPanel1.add(lable_receive, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 160, 110, 30));
 
         jLabel8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Cantidad de procesos: ");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 380, 320, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 400, 320, 30));
 
         tamano_cola.setText("1");
         tamano_cola.addActionListener(new java.awt.event.ActionListener() {
@@ -203,7 +235,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 tamano_colaActionPerformed(evt);
             }
         });
-        jPanel1.add(tamano_cola, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 450, 260, 30));
+        jPanel1.add(tamano_cola, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 470, 260, 30));
 
         cantidad_procesos.setText("1");
         cantidad_procesos.addActionListener(new java.awt.event.ActionListener() {
@@ -211,7 +243,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 cantidad_procesosActionPerformed(evt);
             }
         });
-        jPanel1.add(cantidad_procesos, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 380, 260, 30));
+        jPanel1.add(cantidad_procesos, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 400, 260, 30));
 
         crear_btn.setText("Crear");
         crear_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -227,7 +259,7 @@ public class Configuracion_view extends javax.swing.JFrame {
                 sincro_receive_optionsActionPerformed(evt);
             }
         });
-        jPanel1.add(sincro_receive_options, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 190, 140, 30));
+        jPanel1.add(sincro_receive_options, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 140, 30));
 
         jLabel11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
@@ -237,22 +269,22 @@ public class Configuracion_view extends javax.swing.JFrame {
         label_send.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         label_send.setForeground(new java.awt.Color(0, 0, 0));
         label_send.setText("Send");
-        jPanel1.add(label_send, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 110, 30));
+        jPanel1.add(label_send, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 110, 30));
 
         jLabel13.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Send");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 110, 30));
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 110, 30));
 
         jLabel14.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Receive");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 110, 30));
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 110, 30));
 
         tamano_cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         tamano_cola_label.setForeground(new java.awt.Color(0, 0, 0));
         tamano_cola_label.setText("Tamaño de la cola: ");
-        jPanel1.add(tamano_cola_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 140, 30));
+        jPanel1.add(tamano_cola_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 140, 30));
 
         cantidad_mailbox.setText("1");
         cantidad_mailbox.addActionListener(new java.awt.event.ActionListener() {
@@ -260,25 +292,25 @@ public class Configuracion_view extends javax.swing.JFrame {
                 cantidad_mailboxActionPerformed(evt);
             }
         });
-        jPanel1.add(cantidad_mailbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 520, 260, 30));
+        jPanel1.add(cantidad_mailbox, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 550, 260, 30));
 
         label_largo.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         label_largo.setForeground(new java.awt.Color(0, 0, 0));
         label_largo.setText("Largo");
-        jPanel1.add(label_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 140, 110, 30));
+        jPanel1.add(label_largo, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 150, 110, 30));
 
         label_contenido1.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         label_contenido1.setForeground(new java.awt.Color(0, 0, 0));
         label_contenido1.setText("Contenido");
-        jPanel1.add(label_contenido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 60, 110, 30));
+        jPanel1.add(label_contenido1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 60, 110, 30));
 
         contenido_opciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Texto", "Binario" }));
-        jPanel1.add(contenido_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 100, 140, 30));
+        jPanel1.add(contenido_opciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 110, 140, 30));
 
         label_cantidad_caracteres.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
         label_cantidad_caracteres.setForeground(new java.awt.Color(0, 0, 0));
         label_cantidad_caracteres.setText("Cantidad de caracteres: ");
-        jPanel1.add(label_cantidad_caracteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 210, 160, 30));
+        jPanel1.add(label_cantidad_caracteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 240, 160, 30));
 
         cantidad_caracteres.setText("1");
         cantidad_caracteres.addActionListener(new java.awt.event.ActionListener() {
@@ -286,22 +318,112 @@ public class Configuracion_view extends javax.swing.JFrame {
                 cantidad_caracteresActionPerformed(evt);
             }
         });
-        jPanel1.add(cantidad_caracteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 240, 170, 30));
+        jPanel1.add(cantidad_caracteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 280, 170, 30));
 
         send_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
         send_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
         send_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
         send_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
         send_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
-        jPanel1.add(send_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 30, 30));
+        jPanel1.add(send_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 30, 30));
 
-        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 1020, 780));
+        send_help_button2.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        send_help_button2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        send_help_button2.setMaximumSize(new java.awt.Dimension(0, 0));
+        send_help_button2.setMinimumSize(new java.awt.Dimension(0, 0));
+        send_help_button2.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(send_help_button2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 30, 30));
+
+        format_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        format_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        format_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
+        format_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
+        format_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(format_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 60, 30, 30));
+
+        format_help_button2.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        format_help_button2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        format_help_button2.setMaximumSize(new java.awt.Dimension(0, 0));
+        format_help_button2.setMinimumSize(new java.awt.Dimension(0, 0));
+        format_help_button2.setPreferredSize(new java.awt.Dimension(800, 800));
+        format_help_button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                format_help_button2ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(format_help_button2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 150, 30, 30));
+
+        queueDisc_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        queueDisc_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        queueDisc_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
+        queueDisc_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
+        queueDisc_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(queueDisc_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 30, 30));
+
+        cant_proc_help.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        cant_proc_help.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cant_proc_help.setMaximumSize(new java.awt.Dimension(0, 0));
+        cant_proc_help.setMinimumSize(new java.awt.Dimension(0, 0));
+        cant_proc_help.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(cant_proc_help, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 400, 30, 30));
+
+        tam_cola_help.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        tam_cola_help.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        tam_cola_help.setMaximumSize(new java.awt.Dimension(0, 0));
+        tam_cola_help.setMinimumSize(new java.awt.Dimension(0, 0));
+        tam_cola_help.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(tam_cola_help, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 470, 30, 30));
+
+        cant_mailbox_help.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        cant_mailbox_help.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        cant_mailbox_help.setMaximumSize(new java.awt.Dimension(0, 0));
+        cant_mailbox_help.setMinimumSize(new java.awt.Dimension(0, 0));
+        cant_mailbox_help.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(cant_mailbox_help, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 550, 30, 30));
+
+        direcc_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        direcc_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        direcc_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
+        direcc_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
+        direcc_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
+        direcc_help_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                direcc_help_buttonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(direcc_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 30, 30));
+
+        direcc_receive_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        direcc_receive_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        direcc_receive_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
+        direcc_receive_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
+        direcc_receive_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
+        direcc_receive_help_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                direcc_receive_help_buttonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(direcc_receive_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 190, 30, 30));
+
+        direcc_indirect_help_button.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        direcc_indirect_help_button.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        direcc_indirect_help_button.setMaximumSize(new java.awt.Dimension(0, 0));
+        direcc_indirect_help_button.setMinimumSize(new java.awt.Dimension(0, 0));
+        direcc_indirect_help_button.setPreferredSize(new java.awt.Dimension(800, 800));
+        direcc_indirect_help_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                direcc_indirect_help_buttonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(direcc_indirect_help_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, 30, 30));
+
+        jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 1150, 780));
 
         jLabel1.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto_1\\src\\Imagenes\\fondo.jpg")); // NOI18N
         jLabel1.setText("jLabel1");
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-140, 0, 1780, 900));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1218, 871));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1250, 871));
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -355,6 +477,11 @@ public class Configuracion_view extends javax.swing.JFrame {
                 this.turn_off_options(tamano_cola);
                 this.turn_off_options(cantidad_mailbox_label);
                 this.turn_off_options(cantidad_mailbox);
+                this.queueDisc_help_button.setVisible(false);
+                this.tam_cola_help.setVisible(false);
+                this.cant_mailbox_help.setVisible(false);
+                this.direcc_indirect_help_button.setVisible(false);
+                this.direcc_receive_help_button.setVisible(true);
             }
             else if(element == "Indirecto"){
                this.turn_on_options(dir_indirecto_ops);
@@ -368,6 +495,11 @@ public class Configuracion_view extends javax.swing.JFrame {
                this.turn_off_options(direcc_cb2);
                this.turn_off_options(lable_receive);
                this.turn_off_options(label_send);
+               this.queueDisc_help_button.setVisible(true);
+               this.tam_cola_help.setVisible(true);
+               this.cant_mailbox_help.setVisible(true);
+               this.direcc_receive_help_button.setVisible(false);
+               this.direcc_indirect_help_button.setVisible(true);
                 
             }
         }
@@ -419,6 +551,22 @@ public class Configuracion_view extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_form_largo_opcionesActionPerformed
 
+    private void format_help_button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_format_help_button2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_format_help_button2ActionPerformed
+
+    private void direcc_receive_help_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direcc_receive_help_buttonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direcc_receive_help_buttonActionPerformed
+
+    private void direcc_help_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direcc_help_buttonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direcc_help_buttonActionPerformed
+
+    private void direcc_indirect_help_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direcc_indirect_help_buttonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direcc_indirect_help_buttonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -455,6 +603,8 @@ public class Configuracion_view extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cant_mailbox_help;
+    private javax.swing.JButton cant_proc_help;
     private javax.swing.JTextField cantidad_caracteres;
     private javax.swing.JTextField cantidad_mailbox;
     private javax.swing.JLabel cantidad_mailbox_label;
@@ -464,9 +614,14 @@ public class Configuracion_view extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> dir_indirecto_ops;
     public javax.swing.JCheckBox direcc_cb2;
     public javax.swing.JCheckBox direcc_cb3;
+    private javax.swing.JButton direcc_help_button;
+    private javax.swing.JButton direcc_indirect_help_button;
+    private javax.swing.JButton direcc_receive_help_button;
     private javax.swing.JComboBox<String> direccion_opciones;
     private javax.swing.JLabel disciplina_label;
     private javax.swing.JComboBox<String> form_largo_opciones;
+    private javax.swing.JButton format_help_button;
+    private javax.swing.JButton format_help_button2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
@@ -486,9 +641,12 @@ public class Configuracion_view extends javax.swing.JFrame {
     private javax.swing.JLabel label_send;
     private javax.swing.JLabel lable_receive;
     private javax.swing.JComboBox<String> manejocolas_opciones;
+    private javax.swing.JButton queueDisc_help_button;
     private javax.swing.JButton send_help_button;
+    private javax.swing.JButton send_help_button2;
     private javax.swing.JComboBox<String> sincro_receive_options;
     private javax.swing.JComboBox<String> sincro_send_options;
+    private javax.swing.JButton tam_cola_help;
     private javax.swing.JTextField tamano_cola;
     private javax.swing.JLabel tamano_cola_label;
     // End of variables declaration//GEN-END:variables

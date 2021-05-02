@@ -53,7 +53,7 @@ public class Principal_view extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
-        ayuda_btn = new javax.swing.JMenu();
+        reiniciar_button = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
 
         jTextArea1.setColumns(20);
@@ -167,10 +167,16 @@ public class Principal_view extends javax.swing.JFrame {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 870));
 
         reset_btn.setText("Opciones");
-        jMenuBar1.add(reset_btn);
 
-        ayuda_btn.setText("Reset");
-        jMenuBar1.add(ayuda_btn);
+        reiniciar_button.setText("Reiniciar");
+        reiniciar_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reiniciar_buttonActionPerformed(evt);
+            }
+        });
+        reset_btn.add(reiniciar_button);
+
+        jMenuBar1.add(reset_btn);
 
         jMenu1.setText("Ayuda");
         jMenuBar1.add(jMenu1);
@@ -192,6 +198,13 @@ public class Principal_view extends javax.swing.JFrame {
         ProcessLog_view processlog_v = new ProcessLog_view(process_Selected);
         processlog_v.setVisible(true);
     }//GEN-LAST:event_log_proceso_btnActionPerformed
+
+    private void reiniciar_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reiniciar_buttonActionPerformed
+        this.dispose();
+        //configurador limpiar archivo de logs
+        Configuracion_view config_v = new Configuracion_view();
+        config_v.setVisible(true);
+    }//GEN-LAST:event_reiniciar_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,7 +242,6 @@ public class Principal_view extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu ayuda_btn;
     private javax.swing.JComboBox<String> cb_colas;
     private javax.swing.JComboBox<String> cb_procesos;
     private javax.swing.JTextArea command_line_field;
@@ -249,6 +261,7 @@ public class Principal_view extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JButton log_cola_btn;
     private javax.swing.JButton log_proceso_btn;
+    private javax.swing.JMenuItem reiniciar_button;
     private javax.swing.JMenu reset_btn;
     // End of variables declaration//GEN-END:variables
 }
