@@ -119,9 +119,9 @@
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jTextField1" min="-2" pref="806" max="-2" attributes="0"/>
+                          <Component id="command_field" min="-2" pref="806" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jButton1" max="32767" attributes="0"/>
+                          <Component id="send_command" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="47" max="32767" attributes="0"/>
@@ -155,8 +155,8 @@
                   <Component id="jScrollPane2" min="-2" pref="228" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextField1" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="command_field" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="send_command" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="45" max="32767" attributes="0"/>
               </Group>
@@ -255,12 +255,15 @@
             <Property name="text" type="java.lang.String" value="Colas"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="command_field">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="send_command">
           <Properties>
             <Property name="text" type="java.lang.String" value="Enviar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="send_commandActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -2,7 +2,7 @@
 package utiles;
 
 
-public enum Help_messages {
+public enum HelpMessages {
     //Mensajes ayuda 
     SINCRONIZATION_SEND ("<html>Se tienen dos opciones a elegir, si se elige blocking "
             + "el proceso se bloqueara el enviar un mensaje<br> hasta recibir "
@@ -60,7 +60,7 @@ public enum Help_messages {
 
     public final String message;
     
-    private Help_messages(String message) {
+    private HelpMessages(String message) {
         this.message = message;
     }
 }

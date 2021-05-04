@@ -1,7 +1,9 @@
 
 package vistas;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import modelos.Proceso;
 import utiles.ProcessController;
 
@@ -19,6 +21,7 @@ public class Principal_view extends javax.swing.JFrame {
         this.setResizable(false);
         this.configurador = configurador;
         this.fill_cb();
+        command_line_field.setEditable(false);
     }
     
     //Fill the combobox processes with data
@@ -48,8 +51,8 @@ public class Principal_view extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         command_line_field = new javax.swing.JTextArea();
         jLabel13 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        command_field = new javax.swing.JTextField();
+        send_command = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
@@ -100,7 +103,12 @@ public class Principal_view extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Colas");
 
-        jButton1.setText("Enviar");
+        send_command.setText("Enviar");
+        send_command.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                send_commandActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -123,9 +131,9 @@ public class Principal_view extends javax.swing.JFrame {
                             .addComponent(log_proceso_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(log_cola_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(command_field, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(send_command, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(47, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -151,8 +159,8 @@ public class Principal_view extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(command_field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(send_command))
                 .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -206,6 +214,16 @@ public class Principal_view extends javax.swing.JFrame {
         config_v.setVisible(true);
     }//GEN-LAST:event_reiniciar_buttonActionPerformed
 
+    private void send_commandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_commandActionPerformed
+        //Obtener la hora del sistema y el comando para enviarlo al configurador
+        String command = command_field.getText();
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+        Date date = new Date();  
+        String time = formatter.format(date);
+        String command_output = this.configurador.executeCommand(command, time);
+        command_line_field.append(command_output + "\n");
+    }//GEN-LAST:event_send_commandActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -244,8 +262,8 @@ public class Principal_view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cb_colas;
     private javax.swing.JComboBox<String> cb_procesos;
+    private javax.swing.JTextField command_field;
     private javax.swing.JTextArea command_line_field;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -258,10 +276,10 @@ public class Principal_view extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JButton log_cola_btn;
     private javax.swing.JButton log_proceso_btn;
     private javax.swing.JMenuItem reiniciar_button;
     private javax.swing.JMenu reset_btn;
+    private javax.swing.JButton send_command;
     // End of variables declaration//GEN-END:variables
 }

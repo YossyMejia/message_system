@@ -30,7 +30,7 @@ public class ProcessController {
         //Llamar a crear el mailbox en caso de que la configuracion lo necesite
     }
     
-    //Create the N processes specified by the user 
+    //Create N processes specified by the user 
     public void createProcesses(){
         while (cantidad_procesos != 0){
             String id =  "Proceso ID #"+Integer.toString(cantidad_procesos);
@@ -45,7 +45,7 @@ public class ProcessController {
         return procesos;
     }
     
-    //Return the process that mathc with the ID
+    //Return the process that match with the ID
     public Proceso getProcessByID(String ID){
         Proceso proc_find = null;
         for (Proceso proceso: this.procesos) {
@@ -56,5 +56,40 @@ public class ProcessController {
         }
         return proc_find;
     }
+    
+    //Execute a command and return a output based on the result of the execution 
+    public String executeCommand(String command_input, String time){
+        Command command = new Command(command_input);
+        if (command.getCorrect() == true){
+            String type = command.getCommand_type();
+            if(type == CommandTypes.SEND.type){
+                //aqui llamar funcion de send y hacer las comparaciones o cal
+                //culos que se necesiten segun la configuracion del usuario
+                
+                String message = time+" SEND: el comando es de tipo send el destination es: "
+                        + command.getDestination()+ " y el mensaje es: "+command.getMessage()+"\n";
+                return message;
+            }
+            else if(type == CommandTypes.RECEIVE.type){
+                //aqui llamar funcion de receive y hacer las comparaciones o cal
+                //culos que se necesiten segun la configuracion del usuario
+                
+                String message = time+" RECEIVE: el comando es de tipo receive el source es: "
+                        + command.getSource() + " y el mensaje es: "+command.getMessage()+"\n";
+                return message;
+            }
+        }
+        else{
+            String error_message = time+" ERROR: sintaxis del comando ''"
+                    + command.getCommand_input() +"'' erronea \n";
+            //TODO: GUARDAR COMANDO EN EL ARCHIVO DE LOG
+            return error_message;
+        }
+        String error_message = time+" ERROR: ejecutando el siguiente comando ''"
+                    + command.getCommand_input() +"'' \n";
+        //TODO: GUARDAR COMANDO EN EL ARCHIVO DE LOG
+        return error_message;
+    }
+    
     
 }

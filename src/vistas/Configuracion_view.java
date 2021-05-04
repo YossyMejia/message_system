@@ -3,7 +3,7 @@ package vistas;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.ToolTipManager;
-import utiles.Help_messages;
+import utiles.HelpMessages;
 import utiles.ProcessController;
 
 public class Configuracion_view extends javax.swing.JFrame {
@@ -48,17 +48,17 @@ public class Configuracion_view extends javax.swing.JFrame {
     }
     
     public void setHelp(){
-        this.setHelpMessage(send_help_button, Help_messages.SINCRONIZATION_SEND.message);
-        this.setHelpMessage(send_help_button2, Help_messages.SINCRONIZATION_RECEIVE.message);
-        this.setHelpMessage(format_help_button, Help_messages.FORMAT_CONTENT.message);
-        this.setHelpMessage(format_help_button2, Help_messages.FORMAT_LENGHT.message);
-        this.setHelpMessage(queueDisc_help_button, Help_messages.QUEQUE_DISCIPLINE.message);
-        this.setHelpMessage(cant_proc_help, Help_messages.PROCESS_QUANTITY.message);
-        this.setHelpMessage(tam_cola_help, Help_messages.QUEUE_SIZE.message);
-        this.setHelpMessage(cant_mailbox_help, Help_messages.MAILBOX_QUANTITY.message);
-        this.setHelpMessage(direcc_help_button, Help_messages.ADDRESSING_TYPE.message);
-        this.setHelpMessage(direcc_receive_help_button, Help_messages.ADDRESSING_RECEIEVE.message);
-        this.setHelpMessage(direcc_indirect_help_button, Help_messages.ADDRESSING_INDIRECT.message);
+        this.setHelpMessage(send_help_button, HelpMessages.SINCRONIZATION_SEND.message);
+        this.setHelpMessage(send_help_button2, HelpMessages.SINCRONIZATION_RECEIVE.message);
+        this.setHelpMessage(format_help_button, HelpMessages.FORMAT_CONTENT.message);
+        this.setHelpMessage(format_help_button2, HelpMessages.FORMAT_LENGHT.message);
+        this.setHelpMessage(queueDisc_help_button, HelpMessages.QUEQUE_DISCIPLINE.message);
+        this.setHelpMessage(cant_proc_help, HelpMessages.PROCESS_QUANTITY.message);
+        this.setHelpMessage(tam_cola_help, HelpMessages.QUEUE_SIZE.message);
+        this.setHelpMessage(cant_mailbox_help, HelpMessages.MAILBOX_QUANTITY.message);
+        this.setHelpMessage(direcc_help_button, HelpMessages.ADDRESSING_TYPE.message);
+        this.setHelpMessage(direcc_receive_help_button, HelpMessages.ADDRESSING_RECEIEVE.message);
+        this.setHelpMessage(direcc_indirect_help_button, HelpMessages.ADDRESSING_INDIRECT.message);
     }
     
     public void setHelpMessage(javax.swing.JComponent element, String message){

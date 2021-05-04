@@ -1,8 +1,8 @@
 
 package utiles;
 
-//Enum con las distintas opciones de las variables
-public enum Opciones {
+//Enum con las distintas opciones de las variables de configuracion
+public enum ConfigOptions {
     //Opciones sincronizacion
     SEND_BLOCK ("Blocking"),
     SEND_NONBLOCKIN("Nonblocking"),
@@ -23,7 +23,7 @@ public enum Opciones {
     
     public final String opcion;
     
-    private Opciones(String opcion) {
+    private ConfigOptions(String opcion) {
         this.opcion = opcion;
     }
 }
