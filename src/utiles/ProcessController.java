@@ -11,6 +11,7 @@ public class ProcessController {
     private int cantidad_procesos;
     private String sincr_receive_opt;
     private String sincr_send_opt;
+    
     private ArrayList<Proceso> procesos = new ArrayList<Proceso>();
     public ProcessController() {
         
@@ -33,7 +34,7 @@ public class ProcessController {
     //Create N processes specified by the user 
     public void createProcesses(){
         while (cantidad_procesos != 0){
-            String id =  "Proceso ID #"+Integer.toString(cantidad_procesos);
+            String id =  "proceso#"+Integer.toString(cantidad_procesos);
             Proceso proceso = new Proceso(id);
             this.procesos.add(proceso);
             cantidad_procesos -= 1;
@@ -74,7 +75,7 @@ public class ProcessController {
                 //aqui llamar funcion de receive y hacer las comparaciones o cal
                 //culos que se necesiten segun la configuracion del usuario
                 
-                String message = time+" RECEIVE: el comando es de tipo receive el source es: "
+                String message = time+" RECEIVE: el proceso "+ command.getProcessID()+" invoca el comando es de tipo receive el source es: "
                         + command.getSource() + " y el mensaje es: "+command.getMessage()+"\n";
                 return message;
             }

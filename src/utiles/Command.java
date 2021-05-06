@@ -1,4 +1,3 @@
-
 package utiles;
 
 import java.util.regex.Matcher;
@@ -12,19 +11,21 @@ public class Command {
     private String destination;
     private String source;
     private Boolean correct;
+    private String processID;
 
     public Command(String command_input) {
         this.command_input = command_input;
         this.check_command();
     }
     
+    
     //Verify with regular expressions if the command input is correct to extract
     //the information otherwise set the variable correct to false
     public void check_command(){
-        Pattern pattern_send = Pattern.compile("send(\\s*)[(](\\s*)"
+        Pattern pattern_send = Pattern.compile("[a-zA-Z0-9\\s*\\S]+.send(\\s*)[(](\\s*)"
                 + "[a-zA-Z0-9\\s*\\S]+(\\s*),(\\s*)[a-zA-Z0-9\\s*\\S]+(\\s*)[)]");
         
-        Pattern pattern_receive = Pattern.compile("receive(\\s*)[(](\\s*)"
+        Pattern pattern_receive = Pattern.compile("[a-zA-Z0-9\\s*\\S]+.receive(\\s*)[(](\\s*)"
                 + "[a-zA-Z0-9\\s*\\S]+(\\s*),(\\s*)[a-zA-Z0-9\\s*\\S]+(\\s*)[)]");
         
         Matcher match_send = pattern_send.matcher(this.command_input);   
@@ -38,47 +39,62 @@ public class Command {
         } 
         else if (match_receive.matches()) {
             this.correct = true;
-            this.extractReceiveData();
+            this.command_type = CommandTypes.RECEIVE.type;
+            this.processID = this.extractProcessID();
+            this.source = this.extractFirstAtribute();
+            this.message = this.extractSecondAtribute();
         }
         else{
             this.correct = false;
         }
     }
      
-   //Exctract the send important data in the command using regular expressions
-    public void extractSendData(){
-        Pattern pattern_destination = Pattern.compile("(?<=\\().*(\\s*)"
-                    + "[a-zA-Z0-9\\s*\\S]+(\\s*)(?=,)");
-        Pattern pattern_message = Pattern.compile("(?<=\\,).*(\\s*)"
-                + "[a-zA-Z0-9\\s*\\S]+(\\s*)(?=\\))");
-            
-        Matcher matcher_destination = pattern_destination.matcher(this.command_input);
-        matcher_destination.find();
+    //Extract the procces ID in the command
+    public String extractProcessID(){
+        Pattern pattern_process = Pattern.compile("^([^.]+)");
         
-        Matcher matcher_message = pattern_message.matcher(this.command_input);
-        matcher_message.find();
+        Matcher matcher_process = pattern_process.matcher(this.command_input);
+        matcher_process.find();
         
-        this.command_type = CommandTypes.SEND.type;
-        this.destination = matcher_destination.group();
-        this.message = matcher_message.group();
+        return matcher_process.group();
     }
     
-    //Exctract the receive important data in the command using regular expressions
-    public void extractReceiveData(){
-        Pattern pattern_source = Pattern.compile("(?<=\\().*(\\s*)"
+    //Extract the first atribute of the command
+    public String extractFirstAtribute(){
+        Pattern pattern_firstAtribute = Pattern.compile("(?<=\\().*(\\s*)"
                     + "[a-zA-Z0-9\\s*\\S]+(\\s*)(?=,)");
-        Pattern pattern_message = Pattern.compile("(?<=\\,).*(\\s*)"
+        
+        Matcher matcher_firstAtribute = pattern_firstAtribute.matcher(this.command_input);
+        matcher_firstAtribute.find();
+        
+        return matcher_firstAtribute.group();
+    }
+    
+    //Extract the second atribute of the command
+    public String extractSecondAtribute(){
+        Pattern pattern_secondAtribute = Pattern.compile("(?<=\\,).*(\\s*)"
                 + "[a-zA-Z0-9\\s*\\S]+(\\s*)(?=\\))");
-            
-        Matcher matcher_source = pattern_source.matcher(this.command_input);
-        matcher_source.find();
         
-        Matcher matcher_message = pattern_message.matcher(this.command_input);
-        matcher_message.find();
+        Matcher matcher_secondAtribute = pattern_secondAtribute.matcher(this.command_input);
+        matcher_secondAtribute.find();
         
+        return matcher_secondAtribute.group();
+    }
+    
+   //Asign the send important data in the command
+    public void extractSendData(){
+        this.command_type = CommandTypes.SEND.type;
+        this.processID = this.extractProcessID();
+        this.destination = this.extractFirstAtribute();
+        this.message = this.extractSecondAtribute();
+    }
+    
+    //Asign the extracted information on the variables
+    public void extractReceiveData(){
         this.command_type = CommandTypes.RECEIVE.type;
-        this.destination = matcher_source.group();
-        this.message = matcher_message.group();
+        this.processID = this.extractProcessID();
+        this.source = this.extractFirstAtribute();
+        this.message = this.extractSecondAtribute();
     }
 
     //Getters
@@ -105,6 +121,8 @@ public class Command {
     public String getSource() {
         return source;
     }
-    
-    
+
+    public String getProcessID() {
+        return processID;
+    }
 }
