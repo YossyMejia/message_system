@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package utiles;
 
-/**
- *
- * @author XPC
- */
-public enum Opciones {
+//Enum con las distintas opciones de las variables de configuracion
+public enum ConfigOptions {
     //Opciones sincronizacion
     SEND_BLOCK ("Blocking"),
     SEND_NONBLOCKIN("Nonblocking"),
@@ -17,8 +10,10 @@ public enum Opciones {
     RECEIVE_NONBLOCKIN("Nonblocking"),
     RECEIVE_TFA("Prueba de llegada"),
     //Opciones Addressing
-    RECEIVE_EXPLICIT("Explicito"),
-    RECEIVE_IMPLICIT("Implicito"),
+    ADDRESSING_DIRECT("Directo"),
+    ADDRESSING_INDIRECT("Indirecto"),
+    //ADDRESSING_STATIC(Dinamico),
+    //ADDRESSING_EXPLICIT(Estatico),
     INDIRECT_STATIC("Estatico"),
     INDIRECT_DINAMIC("Dinamico"),
     //Opciones formato
@@ -28,9 +23,9 @@ public enum Opciones {
     DISCIPLINE_FIFO("FIFO"),
     DISCIPLINE_PRIORITY("Prioridad");
     
-    public final String opcion;
+    public final String option;
     
-    private Opciones(String opcion) {
-        this.opcion = opcion;
+    private ConfigOptions(String option) {
+        this.option = option;
     }
 }
