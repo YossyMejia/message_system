@@ -2,7 +2,7 @@
 package utiles;
 
 import java.util.ArrayList;
-import modelos.Proceso;
+import modelos.*;
 
 
 public class Configurador {
