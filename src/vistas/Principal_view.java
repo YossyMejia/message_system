@@ -4,7 +4,7 @@ package vistas;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import modelos.Proceso;
+import modelos.Process;
 import utiles.ProcessController;
 
 /**
@@ -26,9 +26,9 @@ public class Principal_view extends javax.swing.JFrame {
     
     //Fill the combobox processes with data
     public void fill_cb(){
-        ArrayList<Proceso> procesos = this.configurador.getProcesos();
-        for (Proceso proceso: procesos) {
-            this.cb_procesos.addItem(proceso.getProces_id());
+        ArrayList<Process> procesos = this.configurador.getProcesos();
+        for (Process proceso: procesos) {
+            this.cb_procesos.addItem(proceso.getProcess_id());
         }
     }
     
@@ -202,7 +202,7 @@ public class Principal_view extends javax.swing.JFrame {
     private void log_proceso_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_log_proceso_btnActionPerformed
         // TODO add your handling code here:
         String processID = cb_procesos.getSelectedItem().toString();
-        Proceso process_Selected = this.configurador.getProcessByID(processID);
+        Process process_Selected = this.configurador.getProcessByID(processID);
         ProcessLog_view processlog_v = new ProcessLog_view(process_Selected);
         processlog_v.setVisible(true);
     }//GEN-LAST:event_log_proceso_btnActionPerformed
@@ -220,8 +220,8 @@ public class Principal_view extends javax.swing.JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
         Date date = new Date();  
         String time = formatter.format(date);
-        String command_output = this.configurador.executeCommand(command, time);
-        command_line_field.append(command_output + "\n");
+        this.configurador.executeCommand(command, time);
+        command_line_field.append(this.configurador.getOutput_message() + "\n");
     }//GEN-LAST:event_send_commandActionPerformed
 
     /**

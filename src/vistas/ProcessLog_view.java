@@ -5,7 +5,7 @@
  */
 package vistas;
 
-import modelos.Proceso;
+import modelos.Process;
 
 /**
  *
@@ -13,16 +13,16 @@ import modelos.Proceso;
  */
 public class ProcessLog_view extends javax.swing.JFrame {
 
-    Proceso proceso;
+    Process proceso;
     
-    public ProcessLog_view(Proceso proceso) {
+    public ProcessLog_view(Process proceso) {
         initComponents();
         this.proceso = proceso;
         setInfo();
     }
 
     public void setInfo(){
-        this.process_id_label.setText(proceso.getProces_id());
+        this.process_id_label.setText(proceso.getProcess_id());
         this.log_info.setEnabled(false);
         this.log_info.append("Mensajes leidos \n");
         //Aqui recorrer el arreglo de mensajes leidos

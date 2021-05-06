@@ -10,8 +10,10 @@ public enum ConfigOptions {
     RECEIVE_NONBLOCKIN("Nonblocking"),
     RECEIVE_TFA("Prueba de llegada"),
     //Opciones Addressing
-    RECEIVE_EXPLICIT("Explicito"),
-    RECEIVE_IMPLICIT("Implicito"),
+    ADDRESSING_DIRECT("Directo"),
+    ADDRESSING_INDIRECT("Indirecto"),
+    //ADDRESSING_STATIC(Dinamico),
+    //ADDRESSING_EXPLICIT(Estatico),
     INDIRECT_STATIC("Estatico"),
     INDIRECT_DINAMIC("Dinamico"),
     //Opciones formato
@@ -21,9 +23,9 @@ public enum ConfigOptions {
     DISCIPLINE_FIFO("FIFO"),
     DISCIPLINE_PRIORITY("Prioridad");
     
-    public final String opcion;
+    public final String option;
     
-    private ConfigOptions(String opcion) {
-        this.opcion = opcion;
+    private ConfigOptions(String option) {
+        this.option = option;
     }
 }

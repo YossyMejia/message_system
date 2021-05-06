@@ -11,7 +11,7 @@ public class Configuracion_view extends javax.swing.JFrame {
      ProcessController configurador;
      private String sincr_send;
      private String sincr_receive;
-     
+     private String addressing_type;
      
     public Configuracion_view() {
         
@@ -517,8 +517,9 @@ public class Configuracion_view extends javax.swing.JFrame {
         int procesos = Integer.parseInt(cantidad_procesos.getText());
         this.sincr_send = sincro_send_options.getSelectedItem().toString();
         this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
-        this.configurador.setConfig(this.sincr_receive, this.sincr_send, 
-                procesos);
+        this.addressing_type = direccion_opciones.getSelectedItem().toString();
+        this.configurador.setConfig(this.sincr_receive, this.sincr_send,
+                this.addressing_type, procesos);
         this.configurador.create();
         this.dispose();
         Principal_view principal_v = new Principal_view(configurador);
