@@ -13,11 +13,13 @@ import java.time.*;
  * @author Adrian
  */
 public class Message {
-    Process sender;
-    Process receiver;
-    String message;
-    int priority;
-    LocalDateTime LocalDateTimeCreated;
+    
+    private Process sender;
+    private Process receiver;
+    private String message;
+    private int priority;
+    private LocalDateTime LocalDateTimeCreated;
+    private String message_id;
 
     // <editor-fold defaultstate="collapsed" desc="getters y setters">
     public Process getSender() {
@@ -58,14 +60,23 @@ public class Message {
 
     public void setTimeCreated(LocalDateTime LocalDateTimeCreated) {
         this.LocalDateTimeCreated = LocalDateTimeCreated;
+    }
+
+    public String getMessage_id() {
+        return message_id;
+    }
+
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
     }// </editor-fold>
 
-    public Message(Process sender, Process receiver, String message, int priority, LocalDateTime LocalDateTimeCreated) {
+    public Message(Process sender, Process receiver, String message, int priority, LocalDateTime LocalDateTimeCreated, String id) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.priority = priority;
         this.LocalDateTimeCreated = LocalDateTimeCreated;
+        this.message_id = id;
     }
     
 }

@@ -5,24 +5,26 @@
  */
 package modelos;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Adrian
  */
 public class MessageLog {
     
-    Message message[];
+    private ArrayList<Message> messages = new ArrayList<Message>();
 
-    public Message[] getMessage() {
-        return message;
+    public ArrayList<Message> getMessages() {
+        return messages;
     }
 
-    public void setMessage(Message[] message) {
-        this.message = message;
+    public void setMessages(ArrayList<Message> messages) {
+        this.messages = messages;
     }
 
-    public MessageLog(Message[] message) {
-        this.message = message;
-    }    
+    public MessageLog() {
+    }
+
     
 }

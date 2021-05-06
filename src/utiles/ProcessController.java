@@ -3,6 +3,7 @@ package utiles;
 
 import java.util.ArrayList;
 import modelos.Process;
+import modelos.*;
 
 
 public class ProcessController {
@@ -13,7 +14,8 @@ public class ProcessController {
     private String sincr_send_opt;     //sincronization send option (could be blocking, nonblocking)
     private String addressing_type;    //addressing type (could be direct or indirect) 
     private Command command;           //store the command object descomposed
-    
+    private MessageLog messageLog;
+    private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<Process> processes = new ArrayList<Process>();
     private String output_message; //The execution result message
     
@@ -128,8 +130,15 @@ public class ProcessController {
         //mailbox asociado
         //"NOT IMPLEMENTED YET";
     }
-    
-    
+
+    public MessageLog getMessageLog() {
+        return messageLog;
+    }
+
+    public ArrayList<Message> getMessages() {
+        return messages;
+    }
+        
     public ArrayList<Process> getProcesos() {
         return processes;
     }
