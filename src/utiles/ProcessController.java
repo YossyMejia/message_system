@@ -1,9 +1,11 @@
 
 package utiles;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import modelos.Process;
 import modelos.*;
+import vistas.Principal_view;
 
 
 public class ProcessController {
@@ -13,11 +15,13 @@ public class ProcessController {
     private String sincr_receive_opt;  //sincronization recevie option (could be blocking, nonblocking, test for arrival
     private String sincr_send_opt;     //sincronization send option (could be blocking, nonblocking)
     private String addressing_type;    //addressing type (could be direct or indirect) 
+    
     private Command command;           //store the command object descomposed
     private MessageLog messageLog;
     private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<Process> processes = new ArrayList<Process>();
     private String output_message; //The execution result message
+    private String time; //The actual time 
     
     public ProcessController() {
         
@@ -62,30 +66,43 @@ public class ProcessController {
     }
     
     //Execute a command and return a output based on the result of the execution 
-    public void executeCommand(String command_input, String time){
-        Command command = new Command(command_input);
-        this.command = command;
+    public void executeCommand(String command_input, String time, Principal_view command_v){
+        this.command = new Command(command_input);
+        this.time = time;
+        this.output_message = null;
         if (this.command.getCorrect() == true){
             String type = this.command.getCommand_type();   
             
             if(type == CommandTypes.SEND.type){
-                sendCommand();;
+                String message = time+" Tipo comando -> SEND: el proceso "+ this.command.getProcessID()  //LOG
+                        +" invoca el comando, proceso destino: " + this.command.getDestination()
+                        + " y el mensaje es: "+this.command.getMessage()+"\n\n";
+                command_v.writeInConsole(message); //write in the view console
+                sendCommand();
+                command_v.writeInConsole(this.output_message); //write in the view console
             }
             
-            else if(type == CommandTypes.RECEIVE.type){
-                //aqui llamar funcion de receive y hacer las comparaciones o cal
-                //culos que se necesiten segun la configuracion del usuario, aun no implementada
-                String message = time+" RECEIVE: el proceso "+ command.getProcessID()+" invoca el comando es de tipo receive el source es: "
-                        + command.getSource() + " y el mensaje es: "+command.getMessage()+"\n";
-                this.output_message = message;
+            else if(type == CommandTypes.RECEIVE_IMPLICIT.type){
+                String message = time+" Tipo comando -> RECIVE IMPLICITO: el proceso "              //LOG
+                        + this.command.getProcessID()+" invoca el comando \n\n";
+                command_v.writeInConsole(message); //write in the view console
+                //receiveImplicitCommand();
+                command_v.writeInConsole(this.output_message); //write in the view console
+            }
+            else if(type == CommandTypes.RECEIVE_EXPLICIT.type){
+                String message = time+" Tipo comando -> RECIVE EXPLICITO: el proceso "              //LOG
+                        + this.command.getProcessID()+" invoca el comando, desea leer "
+                        + "mensaje proveniente del proceso" + this.command.getSource() + " \n\n";
+                command_v.writeInConsole(message); //write in the view console
+                //receiveExplicitCommand();
+                command_v.writeInConsole(this.output_message); //write in the view console
             }
         }
         
         else{
-            String error_message = time+" ERROR: algo resulto mal ejecutando el comando''"
-                    + command.getCommand_input() +"'' \n";
-            //TODO: GUARDAR output_message y comando EN EL ARCHIVO DE LOG
-            this.output_message = error_message;
+            String error_message = time+" ERROR: algo resulto mal ejecutando el comando''"          //LOG
+                    + this.command.getCommand_input() +"''\n\n";
+            command_v.writeInConsole(error_message); //write in the view console
         }
     }
     
@@ -100,28 +117,106 @@ public class ProcessController {
         }
     }
     
+    
+    //DIRECT MODE FUNCTIONS *************************************************
+    // **********************************************************************
+    
     //Choose what function call in base of the send option 
     public void DirectSendOpt(){
-        if(sincr_send_opt == ConfigOptions.SEND_BLOCK.option){
-            try {
-                Process p = this.getProcessByID(this.command.getProcessID());
-                p.setBlocked(false);
-                p.setRunning(true); 
-                //this.sendMessage()            //Aqui se deberia enviar el mensaje al proceso receptor this.command.getDestination()
-                p.setRunning(false);
-                this.processes.set(this.processes.indexOf(p), p);
-                System.out.println(this.processes.indexOf(p));
+        
+        try {
+            Process send_process = this.getProcessByID(this.command.getProcessID());
+            if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
+                send_process.setBlocked(false);
+                send_process.setReady(true); 
             }
-            catch(Exception e){
-                this.output_message = "ERROR: El identificador de proceso no coincide";
+            else if(sincr_send_opt == ConfigOptions.SEND_BLOCK.option){
+                send_process.setBlocked(true);
+                send_process.setReady(false); 
             }
+            this.directMessage(send_process);
+            send_process.setRunning(false);
+            this.processes.set(this.processes.indexOf(send_process), send_process);
+
         }
-        else if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
-            //Implementacion cuando el send esta en blocking
-            this.output_message = "Opcion unblock";
+        catch(Exception e){
+            this.output_message = this.time+" ERROR: El identificador '"
+                    + this.command.getProcessID()+ "' no coincide con ningun proceso \n\n";
         }
+        this.saveLogMessSendProcess();    //save the log message in the send process
+        this.saveLogMessDestinationProcess(); //save the log message in the destination process
     }
     
+    //create a message and send it to the destination process
+    public void directMessage(Process send_process){
+        try {
+                Process destination_process = this.getProcessByID(this.command.getDestination());
+                Message message = this.createMessageDirectMode(send_process, destination_process);
+                this.sendMessageDirectMode(message, destination_process);
+            }
+            catch(Exception e){
+                this.output_message = this.time+" ERROR: El mensaje '"+ this.command.getMessage()
+                    +"' enviado por el proceso '"+this.command.getProcessID()+ "'"
+                    + " no se ha entregado al proceso " + this.command.getDestination() 
+                    + " debido a que no existe un proceso con ese identificador \n\n";
+            }
+    }
+    
+    //Create a message ONLY for the direct mode 
+    public Message createMessageDirectMode(Process send_process, Process destination_process){
+        Message message = new Message(send_process, destination_process, 
+                this.command.getMessage(), this.time);
+        return message;
+    }
+    
+    //Send a message  ONLY for the direct mode 
+    public void sendMessageDirectMode(Message message, Process destination_process){
+        try{
+            destination_process.saveMessageDirectMode(message);
+            this.processes.set(this.processes.indexOf(destination_process), destination_process);
+            this.output_message = this.time+" EXITOSO: El mensaje '"+ message.getMessage()
+                    +"' enviado por el proceso '"+this.command.getProcessID()+ "'"
+                    + " se ha entregado al proceso '" + this.command.getDestination() 
+                    + "' de forma exitosa \n\n";
+        }
+        catch(Exception e){
+            this.output_message = this.time+" ERROR: No se ha podido ingresar el"
+                    + " mensaje '"+ message.getMessage()+ "' enviado por '"
+                    +this.command.getProcessID() + "' al buzon del proceso '"
+                    +this.command.getDestination() + "\n\n";
+        }
+        
+    }
+            
+    //Save the log messages in the send and destination process, ONLY for the direct mode 
+    public void saveLogMessSendProcess(){
+        try{
+            Process send_process = this.getProcessByID(this.command.getProcessID());
+            String extra_message = "PROCESO_ESTADO: Bloqueado: "
+                    + send_process.getBlocked() + " , Preparado: "
+                    + send_process.getReady() + " , Corriendo: "
+                    + send_process.getRunning() + "\n";
+            send_process.saveLogMessage(this.output_message + extra_message);
+            this.processes.set(this.processes.indexOf(send_process), send_process);
+        }
+        catch(Exception e){}
+    }
+    
+    public void saveLogMessDestinationProcess(){
+        try{
+            Process destination_process = this.getProcessByID(this.command.getDestination());
+            String extra_message = "PROCESO_ESTADO: Bloqueado: "
+                    + destination_process.getBlocked() + " , Preparado: "
+                    + destination_process.getReady() + " , Corriendo: "
+                    + destination_process.getRunning() + "\n";
+            destination_process.saveLogMessage(this.output_message + extra_message);
+            this.processes.set(this.processes.indexOf(destination_process), destination_process);
+        }
+        catch(Exception e){}
+    }
+    
+     //DIRECT MODE FUNCTIONS END ********************************************
+    // **********************************************************************
     
     public void IndirectSendOpt(){
         //Aqui se preguntan las condiciones que deben ser preguntadas para
@@ -131,6 +226,7 @@ public class ProcessController {
         //"NOT IMPLEMENTED YET";
     }
 
+    
     public MessageLog getMessageLog() {
         return messageLog;
     }
@@ -146,4 +242,10 @@ public class ProcessController {
     public String getOutput_message() {
         return output_message;
     }
+
+    public String getAddressing_type() {
+        return addressing_type;
+    }
+    
+    
 }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import modelos.Process;
+import utiles.ConfigOptions;
 import utiles.ProcessController;
 
 /**
@@ -22,6 +23,7 @@ public class Principal_view extends javax.swing.JFrame {
         this.configurador = configurador;
         this.fill_cb();
         command_line_field.setEditable(false);
+        this.displayQueueOpt();
     }
     
     //Fill the combobox processes with data
@@ -30,6 +32,20 @@ public class Principal_view extends javax.swing.JFrame {
         for (Process proceso: procesos) {
             this.cb_procesos.addItem(proceso.getProcess_id());
         }
+    }
+    
+    public void displayQueueOpt(){
+        if(configurador.getAddressing_type().equals(ConfigOptions.ADDRESSING_DIRECT.option)){
+            this.turn_off_options(this.cb_colas);
+            this.turn_off_options(this.cola_label);
+            this.turn_off_options(this.log_cola_btn);
+        }
+    }
+    
+    //Funcion encargada de deshabilitar componentes y hacerlos invisibles
+    public void turn_off_options(javax.swing.JComponent element) {
+        element.setVisible(false);
+        element.setEnabled(false);
     }
     
     
@@ -50,14 +66,14 @@ public class Principal_view extends javax.swing.JFrame {
         log_proceso_btn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         command_line_field = new javax.swing.JTextArea();
-        jLabel13 = new javax.swing.JLabel();
+        cola_label = new javax.swing.JLabel();
         command_field = new javax.swing.JTextField();
         send_command = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
         reiniciar_button = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        leer_btn = new javax.swing.JMenuItem();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -99,9 +115,9 @@ public class Principal_view extends javax.swing.JFrame {
         command_line_field.setRows(5);
         jScrollPane2.setViewportView(command_line_field);
 
-        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel13.setText("Colas");
+        cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cola_label.setForeground(new java.awt.Color(0, 0, 0));
+        cola_label.setText("Colas");
 
         send_command.setText("Enviar");
         send_command.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +154,7 @@ public class Principal_view extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(90, 90, 90)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cola_label, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(880, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
@@ -165,7 +181,7 @@ public class Principal_view extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(193, 193, 193)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cola_label, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(507, Short.MAX_VALUE)))
         );
 
@@ -184,10 +200,15 @@ public class Principal_view extends javax.swing.JFrame {
         });
         reset_btn.add(reiniciar_button);
 
-        jMenuBar1.add(reset_btn);
+        leer_btn.setText("Leer archivo");
+        leer_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leer_btnActionPerformed(evt);
+            }
+        });
+        reset_btn.add(leer_btn);
 
-        jMenu1.setText("Ayuda");
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(reset_btn);
 
         setJMenuBar(jMenuBar1);
 
@@ -220,9 +241,17 @@ public class Principal_view extends javax.swing.JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
         Date date = new Date();  
         String time = formatter.format(date);
-        this.configurador.executeCommand(command, time);
-        command_line_field.append(this.configurador.getOutput_message() + "\n");
+        this.configurador.executeCommand(command, time, this);
     }//GEN-LAST:event_send_commandActionPerformed
+
+    public void writeInConsole(String logMessage){
+        command_line_field.append(logMessage + "\n");
+    }
+    
+    private void leer_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leer_btnActionPerformed
+        FileReader_view file_reader_v = new FileReader_view();
+        file_reader_v.setVisible(true);
+    }//GEN-LAST:event_leer_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,13 +291,12 @@ public class Principal_view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cb_colas;
     private javax.swing.JComboBox<String> cb_procesos;
+    private javax.swing.JLabel cola_label;
     private javax.swing.JTextField command_field;
     private javax.swing.JTextArea command_line_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -276,6 +304,7 @@ public class Principal_view extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JMenuItem leer_btn;
     private javax.swing.JButton log_cola_btn;
     private javax.swing.JButton log_proceso_btn;
     private javax.swing.JMenuItem reiniciar_button;

@@ -25,24 +25,28 @@ public class Command {
         Pattern pattern_send = Pattern.compile("[a-zA-Z0-9\\s*\\S]+.send(\\s*)[(](\\s*)"
                 + "[a-zA-Z0-9\\s*\\S]+(\\s*),(\\s*)[a-zA-Z0-9\\s*\\S]+(\\s*)[)]");
         
-        Pattern pattern_receive = Pattern.compile("[a-zA-Z0-9\\s*\\S]+.receive(\\s*)[(](\\s*)"
-                + "[a-zA-Z0-9\\s*\\S]+(\\s*),(\\s*)[a-zA-Z0-9\\s*\\S]+(\\s*)[)]");
+        Pattern pattern_receive_explicit = Pattern.compile("[a-zA-Z0-9\\s*\\S]+."
+                + "receive(\\s*)[(][a-zA-Z0-9\\S]+[)]");
+        
+        Pattern pattern_receive_implicit = Pattern.compile("[a-zA-Z0-9\\s*\\S]+."
+                + "receive(\\s*)[(][)]");
         
         Matcher match_send = pattern_send.matcher(this.command_input);   
-        Matcher match_receive = pattern_receive.matcher(this.command_input);  
-        
+        Matcher match_receive_explicit = pattern_receive_explicit.matcher(this.command_input);  
+        Matcher match_receive_implicit = pattern_receive_implicit.matcher(this.command_input); 
         
         if (match_send.matches()) {
             this.correct = true;
             this.extractSendData();
             
         } 
-        else if (match_receive.matches()) {
+        else if (match_receive_explicit.matches()) {
             this.correct = true;
-            this.command_type = CommandTypes.RECEIVE.type;
-            this.processID = this.extractProcessID();
-            this.source = this.extractFirstAtribute();
-            this.message = this.extractSecondAtribute();
+            this.extractReceiveExplicitData();
+        }
+        else if(match_receive_implicit.matches()){ 
+            this.correct = true;
+            this.extractReceiveImplicitData();
         }
         else{
             this.correct = false;
@@ -81,6 +85,17 @@ public class Command {
         return matcher_secondAtribute.group();
     }
     
+    //Extract the unique atribute in the command
+    public String extractUniqueAtribute(){
+        Pattern pattern_uniqueAtribute = Pattern.compile("(?<=\\().*"
+                + "[a-zA-Z0-9\\S]+(?=\\))");
+        
+        Matcher matcher_uniqueAtribute = pattern_uniqueAtribute.matcher(this.command_input);
+        matcher_uniqueAtribute.find();
+        
+        return matcher_uniqueAtribute.group();
+    }
+    
    //Asign the send important data in the command
     public void extractSendData(){
         this.command_type = CommandTypes.SEND.type;
@@ -89,12 +104,17 @@ public class Command {
         this.message = this.extractSecondAtribute();
     }
     
-    //Asign the extracted information on the variables
-    public void extractReceiveData(){
-        this.command_type = CommandTypes.RECEIVE.type;
+    //Asign the extracted information of the command in the variables
+    public void extractReceiveExplicitData(){
+        this.command_type = CommandTypes.RECEIVE_EXPLICIT.type;
         this.processID = this.extractProcessID();
-        this.source = this.extractFirstAtribute();
-        this.message = this.extractSecondAtribute();
+        this.source = this.extractUniqueAtribute();
+    }
+    
+    //Asign the extracted information of the command in the variables
+    public void extractReceiveImplicitData(){
+        this.command_type = CommandTypes.RECEIVE_IMPLICIT.type;
+        this.processID = this.extractProcessID();
     }
 
     //Getters

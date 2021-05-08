@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import javax.swing.JRootPane;
 import modelos.Process;
 
 /**
@@ -19,18 +20,20 @@ public class ProcessLog_view extends javax.swing.JFrame {
         initComponents();
         this.proceso = proceso;
         setInfo();
+        this.setDefaultCloseOperation(0);
     }
 
     public void setInfo(){
+        String status = "Bloqueado: "
+                    + proceso.getBlocked() + " , Preparado: "
+                    + proceso.getReady() + " , Corriendo: "
+                    + proceso.getRunning() + "\n";
+        this.proceso_status_lable.setText(status);
         this.process_id_label.setText(proceso.getProcess_id());
         this.log_info.setEnabled(false);
-        this.log_info.append("Mensajes leidos \n");
-        //Aqui recorrer el arreglo de mensajes leidos
-        this.log_info.append("00:45 Mensaje 1: Hola!\n");
-        //
-        this.log_info.append("Mensajes enviados\n");
-        //Aqui recorrer el arreglo de mensajes enviados
-        this.log_info.append("11:45 Mensaje 4: Adios!\n");
+        for (String mensaje: this.proceso.getLog_messages()) {
+            this.log_info.append(mensaje);
+        }
         //
     }
     
@@ -43,6 +46,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         log_info = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
+        proceso_status_lable = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,7 +56,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
         process_id_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         process_id_label.setForeground(new java.awt.Color(0, 0, 0));
         process_id_label.setText("Proceso ID");
-        jPanel1.add(process_id_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 30));
+        jPanel1.add(process_id_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 110, 30));
 
         log_info.setColumns(20);
         log_info.setForeground(new java.awt.Color(0, 0, 0));
@@ -60,25 +64,32 @@ public class ProcessLog_view extends javax.swing.JFrame {
         log_info.setRows(5);
         jScrollPane1.setViewportView(log_info);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 460, 340));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 810, 250));
 
-        jButton1.setText("Cerrar");
+        jButton1.setText("Listo");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 430, -1, -1));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, -1, -1));
+
+        proceso_status_lable.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        proceso_status_lable.setForeground(new java.awt.Color(0, 0, 0));
+        proceso_status_lable.setText("STATUS_INFO");
+        jPanel1.add(proceso_status_lable, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 620, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 893, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
         );
 
         pack();
@@ -129,6 +140,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea log_info;
+    private javax.swing.JLabel proceso_status_lable;
     private javax.swing.JLabel process_id_label;
     // End of variables declaration//GEN-END:variables
 }
