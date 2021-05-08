@@ -195,7 +195,7 @@ public class ProcessController {
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + send_process.getBlocked() + " , Preparado: "
                     + send_process.getReady() + " , Corriendo: "
-                    + send_process.getRunning() + "\n";
+                    + send_process.getRunning() + "\n\n";
             send_process.saveLogMessage(this.output_message + extra_message);
             this.processes.set(this.processes.indexOf(send_process), send_process);
         }
@@ -208,7 +208,7 @@ public class ProcessController {
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + destination_process.getBlocked() + " , Preparado: "
                     + destination_process.getReady() + " , Corriendo: "
-                    + destination_process.getRunning() + "\n";
+                    + destination_process.getRunning() + "\n\n";
             destination_process.saveLogMessage(this.output_message + extra_message);
             this.processes.set(this.processes.indexOf(destination_process), destination_process);
         }

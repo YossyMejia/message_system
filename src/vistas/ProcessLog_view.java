@@ -43,10 +43,10 @@ public class ProcessLog_view extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         process_id_label = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        log_info = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         proceso_status_lable = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        log_info = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,15 +56,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
         process_id_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         process_id_label.setForeground(new java.awt.Color(0, 0, 0));
         process_id_label.setText("Proceso ID");
-        jPanel1.add(process_id_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 110, 30));
-
-        log_info.setColumns(20);
-        log_info.setForeground(new java.awt.Color(0, 0, 0));
-        log_info.setLineWrap(true);
-        log_info.setRows(5);
-        jScrollPane1.setViewportView(log_info);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 810, 250));
+        jPanel1.add(process_id_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 110, 30));
 
         jButton1.setText("Listo");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +70,14 @@ public class ProcessLog_view extends javax.swing.JFrame {
         proceso_status_lable.setForeground(new java.awt.Color(0, 0, 0));
         proceso_status_lable.setText("STATUS_INFO");
         jPanel1.add(proceso_status_lable, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 620, 30));
+
+        log_info.setBackground(new java.awt.Color(255, 255, 255));
+        log_info.setColumns(20);
+        log_info.setForeground(new java.awt.Color(0, 0, 0));
+        log_info.setRows(5);
+        jScrollPane2.setViewportView(log_info);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 810, 250));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,7 +138,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea log_info;
     private javax.swing.JLabel proceso_status_lable;
     private javax.swing.JLabel process_id_label;

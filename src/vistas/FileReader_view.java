@@ -5,15 +5,16 @@
  */
 package vistas;
 
+import java.io.File;
+
 /**
  *
  * @author XPC
  */
 public class FileReader_view extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FileReader_view
-     */
+    private File file;
+    
     public FileReader_view() {
         initComponents();
         this.setDefaultCloseOperation(0);
@@ -32,6 +33,7 @@ public class FileReader_view extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jFileChooser1 = new javax.swing.JFileChooser();
         Cancelar = new javax.swing.JButton();
+        run_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(220, 220, 220));
@@ -43,6 +45,13 @@ public class FileReader_view extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Lector de archivo");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, -1));
+
+        jFileChooser1.setCurrentDirectory(new java.io.File("C:\\Users\\XPC\\Desktop\\desktop.ini"));
+        jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFileChooser1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jFileChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 680, 340));
 
         Cancelar.setText("Cancelar");
@@ -51,7 +60,15 @@ public class FileReader_view extends javax.swing.JFrame {
                 CancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(Cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 480, -1, -1));
+        jPanel1.add(Cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
+
+        run_button.setText("Correr comandos");
+        run_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                run_buttonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(run_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 140, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,6 +90,18 @@ public class FileReader_view extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_CancelarActionPerformed
+
+    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
+        // TODO add your handling code here:
+        int returnVal = jFileChooser1.showOpenDialog(jFileChooser1);
+        if (returnVal == jFileChooser1.APPROVE_OPTION) {
+            this.file = jFileChooser1.getSelectedFile();
+        }
+    }//GEN-LAST:event_jFileChooser1ActionPerformed
+
+    private void run_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_run_buttonActionPerformed
+        System.out.println(this.file.getName());
+    }//GEN-LAST:event_run_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,5 +143,6 @@ public class FileReader_view extends javax.swing.JFrame {
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton run_button;
     // End of variables declaration//GEN-END:variables
 }
