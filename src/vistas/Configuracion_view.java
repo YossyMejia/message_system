@@ -520,6 +520,8 @@ public class Configuracion_view extends javax.swing.JFrame {
 
     private void crear_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crear_btnActionPerformed
         int procesos = Integer.parseInt(cantidad_procesos.getText());
+        int mailboxes = Integer.parseInt(cantidad_mailbox.getText());
+        int largo_cola = Integer.parseInt(tamano_cola.getText());
         this.sincr_send = sincro_send_options.getSelectedItem().toString();
         this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
         this.addressing_type = direccion_opciones.getSelectedItem().toString();
@@ -537,6 +539,11 @@ public class Configuracion_view extends javax.swing.JFrame {
         else if(this.message_length_type == ConfigOptions.LENGTH_VARIABLE.option){
             Message set_message_options = new Message(ConfigOptions.LENGTH_VARIABLE.option, 
             this.message_content_type);
+        }
+        
+        if (this.addressing_type == ConfigOptions.ADDRESSING_INDIRECT.option) {
+            this.configurador.setCantidad_mailboxes(mailboxes);
+            this.configurador.setLargo_cola(largo_cola);
         }
         
         this.configurador.setConfig(this.sincr_receive, this.sincr_send,

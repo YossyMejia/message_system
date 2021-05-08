@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package modelos;
 
 import java.util.PriorityQueue;
@@ -13,15 +9,15 @@ import java.util.PriorityQueue;
  */
 public class Mailbox {
     
-    String name;
-    PriorityQueue queue;
+    private PriorityQueue queue;
+    private String mailbox_id;
 
-    public String getName() {
-        return name;
+    public String getMailbox_id() {
+        return mailbox_id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMailbox_id(String mailbox_id) {
+        this.mailbox_id = mailbox_id;
     }
 
     public PriorityQueue getQueue() {
@@ -32,10 +28,24 @@ public class Mailbox {
         this.queue = queue;
     }
 
-    public Mailbox(String name, PriorityQueue queue) {
-        this.name = name;
+    public Mailbox(String id, PriorityQueue queue) {
+        this.mailbox_id = id;
         this.queue = queue;
     }
     
+    public Mailbox(String id, int size) {
+        this.mailbox_id = id;
+        this.queue = new PriorityQueue(size);
+    }      
     
+   
+    public Mailbox(String id) {
+        this.mailbox_id = id;
+        //this.queue = new PriorityQueue();
+    }
+    
+    public void createQueue(int size) {
+        this.queue = new PriorityQueue(size);
+        
+    }
 }
