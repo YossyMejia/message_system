@@ -50,11 +50,20 @@ public enum HelpMessages {
     
     ADDRESSING_RECEIEVE ("<html>En esta opcion se debe elegir si el direccionamiento <br>"
             + "al proceso que se recibe es explicito o implicito, si es explicito se <br>"
-            + "especifica quien debe ser el proceso que reciba el mensaje y si es <br>"
-            + "implicito el proceso que recibe el mensaje es el que informa cuando <br>"
-            + "recibe el mensaje y de quien lo recibe.</html>" ),
+            + "especifica quien debe ser el proceso del que se recibe un mensaje <br>"
+            + "y si es implicito el proceso leera el primer mensaje almacenado en el buffer.</html>" ),
     
-    ADDRESSING_INDIRECT ("<html>PREGUNTAR AUN NO ESTOY SEGURO</html>" );
+    ADDRESSING_INDIRECT ("<html>NO SE</html>" ),
+    
+    COMMAND_HELP ("<html>La sintaxis de los comandos es la siguiente: <br>"
+            + "- pID.send(pID2, message) comando para enviar mensaje, pID es el <br>"
+            + "proceso que envia el mensaje, pID2 es el proceso que lo recibe y <br> "
+            + "message es el mensaje a enviar.<br>"
+            + "- pID.receive() comando para hacer un receive implicito, donde pID es <br>"
+            + "el proceso que desea hacer el receive. <br>"
+            + "- pID.receive(pID2) comando para hacer un receive explicito, donde <br>"
+            + "pID es el proceso que desea hacer el receive y pID2 el proceso del que"
+            + "desea recibir.</html>");
     
     
 

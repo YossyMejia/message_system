@@ -4,7 +4,10 @@ package vistas;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.ToolTipManager;
 import modelos.Process;
+import utiles.ConfigOptions;
+import utiles.HelpMessages;
 import utiles.ProcessController;
 
 /**
@@ -22,6 +25,8 @@ public class Principal_view extends javax.swing.JFrame {
         this.configurador = configurador;
         this.fill_cb();
         command_line_field.setEditable(false);
+        this.displayQueueOpt();
+        this.help_messages();
     }
     
     //Fill the combobox processes with data
@@ -32,6 +37,30 @@ public class Principal_view extends javax.swing.JFrame {
         }
     }
     
+    public void displayQueueOpt(){
+        if(configurador.getAddressing_type().equals(ConfigOptions.ADDRESSING_DIRECT.option)){
+            this.turn_off_options(this.cb_colas);
+            this.turn_off_options(this.cola_label);
+            this.turn_off_options(this.log_cola_btn);
+        }
+    }
+    
+    //Funcion encargada de deshabilitar componentes y hacerlos invisibles
+    public void turn_off_options(javax.swing.JComponent element) {
+        element.setVisible(false);
+        element.setEnabled(false);
+    }
+    
+    public void help_messages(){
+        this.command_help_btn.setEnabled(false);
+        this.setHelpMessage(command_help_btn, HelpMessages.COMMAND_HELP.message);
+    }
+    
+    public void setHelpMessage(javax.swing.JComponent element, String message){
+        ToolTipManager.sharedInstance().setDismissDelay(60000);
+        element.setToolTipText(message);
+        element.setEnabled(false);
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -50,14 +79,15 @@ public class Principal_view extends javax.swing.JFrame {
         log_proceso_btn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         command_line_field = new javax.swing.JTextArea();
-        jLabel13 = new javax.swing.JLabel();
+        cola_label = new javax.swing.JLabel();
         command_field = new javax.swing.JTextField();
         send_command = new javax.swing.JButton();
+        command_help_btn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
         reiniciar_button = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        leer_btn = new javax.swing.JMenuItem();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -95,13 +125,15 @@ public class Principal_view extends javax.swing.JFrame {
             }
         });
 
+        command_line_field.setBackground(new java.awt.Color(255, 255, 255));
         command_line_field.setColumns(20);
+        command_line_field.setForeground(new java.awt.Color(0, 0, 0));
         command_line_field.setRows(5);
         jScrollPane2.setViewportView(command_line_field);
 
-        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel13.setText("Colas");
+        cola_label.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        cola_label.setForeground(new java.awt.Color(0, 0, 0));
+        cola_label.setText("Colas");
 
         send_command.setText("Enviar");
         send_command.addActionListener(new java.awt.event.ActionListener() {
@@ -110,12 +142,20 @@ public class Principal_view extends javax.swing.JFrame {
             }
         });
 
+        command_help_btn.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        command_help_btn.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        command_help_btn.setMaximumSize(new java.awt.Dimension(0, 0));
+        command_help_btn.setMinimumSize(new java.awt.Dimension(0, 0));
+        command_help_btn.setPreferredSize(new java.awt.Dimension(800, 800));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
+                .addGap(21, 21, 21)
+                .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -138,38 +178,41 @@ public class Principal_view extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(90, 90, 90)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cola_label, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(880, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(58, 58, 58)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_procesos, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(log_proceso_btn))
-                .addGap(82, 82, 82)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cb_colas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(log_cola_btn))
-                .addGap(119, 119, 119)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(command_field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(send_command))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_procesos, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(log_proceso_btn))
+                        .addGap(82, 82, 82)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cb_colas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(log_cola_btn))
+                        .addGap(119, 119, 119)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(command_field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(send_command))))
                 .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(193, 193, 193)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cola_label, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(507, Short.MAX_VALUE)))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 1050, 730));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1050, 730));
 
         jLabel1.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto_1\\src\\Imagenes\\fondo.jpg")); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 870));
@@ -184,10 +227,15 @@ public class Principal_view extends javax.swing.JFrame {
         });
         reset_btn.add(reiniciar_button);
 
-        jMenuBar1.add(reset_btn);
+        leer_btn.setText("Leer archivo");
+        leer_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leer_btnActionPerformed(evt);
+            }
+        });
+        reset_btn.add(leer_btn);
 
-        jMenu1.setText("Ayuda");
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(reset_btn);
 
         setJMenuBar(jMenuBar1);
 
@@ -220,9 +268,17 @@ public class Principal_view extends javax.swing.JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
         Date date = new Date();  
         String time = formatter.format(date);
-        this.configurador.executeCommand(command, time);
-        command_line_field.append(this.configurador.getOutput_message() + "\n");
+        this.configurador.executeCommand(command, time, this);
     }//GEN-LAST:event_send_commandActionPerformed
+
+    public void writeInConsole(String logMessage){
+        command_line_field.append(logMessage + "\n");
+    }
+    
+    private void leer_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leer_btnActionPerformed
+        FileReader_view file_reader_v = new FileReader_view();
+        file_reader_v.setVisible(true);
+    }//GEN-LAST:event_leer_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,13 +318,13 @@ public class Principal_view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cb_colas;
     private javax.swing.JComboBox<String> cb_procesos;
+    private javax.swing.JLabel cola_label;
     private javax.swing.JTextField command_field;
+    private javax.swing.JButton command_help_btn;
     private javax.swing.JTextArea command_line_field;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -276,6 +332,7 @@ public class Principal_view extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JMenuItem leer_btn;
     private javax.swing.JButton log_cola_btn;
     private javax.swing.JButton log_proceso_btn;
     private javax.swing.JMenuItem reiniciar_button;

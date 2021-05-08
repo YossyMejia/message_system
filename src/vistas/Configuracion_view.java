@@ -3,6 +3,8 @@ package vistas;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.ToolTipManager;
+import modelos.Message;
+import utiles.ConfigOptions;
 import utiles.HelpMessages;
 import utiles.ProcessController;
 
@@ -12,6 +14,9 @@ public class Configuracion_view extends javax.swing.JFrame {
      private String sincr_send;
      private String sincr_receive;
      private String addressing_type;
+     private String message_length_type;
+     private String message_content_type;
+     private int message_lenght;
      
     public Configuracion_view() {
         
@@ -237,7 +242,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         });
         jPanel1.add(tamano_cola, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 470, 260, 30));
 
-        cantidad_procesos.setText("1");
+        cantidad_procesos.setText("2");
         cantidad_procesos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cantidad_procesosActionPerformed(evt);
@@ -245,13 +250,13 @@ public class Configuracion_view extends javax.swing.JFrame {
         });
         jPanel1.add(cantidad_procesos, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 400, 260, 30));
 
-        crear_btn.setText("Crear");
+        crear_btn.setText("Crear sistema de mensajeria");
         crear_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crear_btnActionPerformed(evt);
             }
         });
-        jPanel1.add(crear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 690, 130, 50));
+        jPanel1.add(crear_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 690, 220, 50));
 
         sincro_receive_options.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Blocking", "Nonblocking", "Prueba de llegada" }));
         sincro_receive_options.addActionListener(new java.awt.event.ActionListener() {
@@ -518,6 +523,22 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.sincr_send = sincro_send_options.getSelectedItem().toString();
         this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
         this.addressing_type = direccion_opciones.getSelectedItem().toString();
+        
+        //Set of the options to the message
+        this.message_length_type = form_largo_opciones.getSelectedItem().toString();
+        this.message_content_type = contenido_opciones.getSelectedItem().toString();
+        this.message_lenght = Integer.parseInt(cantidad_caracteres.getText().toString());
+        
+        if(this.message_length_type == ConfigOptions.LENGTH_FIXED.option){
+            Message set_message_options = new Message(ConfigOptions.LENGTH_FIXED.option, 
+            this.message_lenght,this.message_content_type);
+        }
+        
+        else if(this.message_length_type == ConfigOptions.LENGTH_VARIABLE.option){
+            Message set_message_options = new Message(ConfigOptions.LENGTH_VARIABLE.option, 
+            this.message_content_type);
+        }
+        
         this.configurador.setConfig(this.sincr_receive, this.sincr_send,
                 this.addressing_type, procesos);
         this.configurador.create();
