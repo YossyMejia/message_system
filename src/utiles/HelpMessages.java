@@ -63,7 +63,13 @@ public enum HelpMessages {
             + "el proceso que desea hacer el receive. <br>"
             + "- pID.receive(pID2) comando para hacer un receive explicito, donde <br>"
             + "pID es el proceso que desea hacer el receive y pID2 el proceso del que"
-            + "desea recibir.</html>"),
+            + "desea recibir. <br>"
+            + "- read() despues de cargar un archivo de texto se ejecutan sus comandos, <br>"
+            + "se ejecutaran los N comandos especificados por el usuario en el apartado <br>"
+            + "de cargar documento.<br>"
+            + "- continue() en caso de que el usuario especifique detener la ejecucion <br>"
+            + "de los comandos del archivo de texto podra continuar con la ejecucion <br>"
+            + "de los N siguientes comandos con este comando.</html>"),
     
     PROCESS_LOG_HELP ("<html>El usuario tiene la posibilidad de elegir un proceso <br>"
             + "para poder ver su estado acutal y los mensajes LOG asociados a <br>"
@@ -71,7 +77,8 @@ public enum HelpMessages {
     
     N_COMMAND_HELP ("<html>El usuario tiene la posibilidad de ingresar cada cuantos <br>"
             + "comandos se debe para la ejecucion de los comandos del archivo <br> "
-            + "y esperar que el usuario decida continuarla (con el comando continue())</html>"),
+            + "y esperar que el usuario decida continuarla (con el comando continue()).<br>"
+            + "Si el usuario ingresa 0 se ejecutara todo el archivo.</html>"),
     
     FILE_READER_HELP("<html>El usuario tiene la posibilidad de elegir un archivo <br>"
             + "de texto del cual quiere leer comandos para el sistema de mensajes.</html>");

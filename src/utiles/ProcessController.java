@@ -2,8 +2,12 @@
 package utiles;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 import modelos.Process;
 import modelos.*;
 import vistas.Principal_view;
@@ -25,8 +29,10 @@ public class ProcessController {
     private String output_message; //The execution result message
     private String time; //The actual time 
     
-    private static File command_file;
-    private static int N_stop;
+    //File managment variables
+    private File command_file;
+    private int N_stop;
+    private ArrayList<String> buffer_command;
     
     public ProcessController() {
         
@@ -121,15 +127,42 @@ public class ProcessController {
             }
             
             else if(type == CommandTypes.CONTINUE.type){
-                if(this.command_file != null)
-                    System.out.println(this.command_file.getName());
-                System.out.println(this.N_stop);
+                if(this.command_file != null){
+                    String message = time+" Tipo comando -> CONTINUE: "
+                            + "Corriendo comandos desde archivo cargado....\n\n";
+                    command_v.writeInConsole(message); //write in the view console
+                    if(this.N_stop > 0){
+                        this.executeNBufferCommands(command_v);
+                    }
+                    else{
+                        String message2 = time + "ERROR: para ejecutar este comando "
+                                + "la cantidad de comandos para parar debe ser distinta de 0 \n\n";
+                        command_v.writeInConsole(message2); //write in the view console
+                    }
+                    
+                }
+                else{
+                    String message = time+" Tipo comando -> READ: "
+                            + "No se ha cargado ningun documento de comandos\n\n";
+                    command_v.writeInConsole(message); //write in the view console
+                }
             }
             
             else if(type == CommandTypes.READ.type){
-                if(this.command_file != null)
-                    System.out.println(this.command_file.getName());
-                System.out.println(this.N_stop);
+                if(this.command_file != null){
+                    String message = time+" Tipo comando -> READ: "
+                            + "Corriendo comandos desde archivo cargado....\n\n";
+                    command_v.writeInConsole(message); //write in the view console
+                    if(this.N_stop > 0)
+                        this.executeNBufferCommands(command_v);
+                    else
+                        this.executeAllBufferCommands(command_v);
+                }
+                else{
+                    String message = time+" Tipo comando -> READ: "
+                            + "No se ha cargado ningun documento de comandos\n\n";
+                    command_v.writeInConsole(message); //write in the view console
+                }
             }
             
         }
@@ -427,6 +460,64 @@ public class ProcessController {
     //DIRECT MODE FUNCTIONS END ********************************************
     // **********************************************************************
     
+     //FILE FUNCTIONS ********************************************
+    // **********************************************************************
+     
+    //Load the commands in the file to the command buffer
+    public void loadCommandsToBuffer(){
+        try{
+            ArrayList<String> buffer = new ArrayList<String>();
+            Scanner myReader = new Scanner(this.command_file);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                buffer.add(data);
+            }
+            myReader.close();
+            this.buffer_command = buffer;
+        }
+        catch(Exception e){
+            System.out.println("An error occurred.");
+        }
+    }
+    
+    //Execute N commands in the buffer
+    public void executeNBufferCommands(Principal_view command_v){
+        int n = this.N_stop;
+        while( n != 0 ){
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+            Date date = new Date();  
+            String time = formatter.format(date);
+            if(this.buffer_command.isEmpty()){
+                String message = time+" Se han agotado los comandos del archivo...\n\n";
+                command_v.writeInConsole(message);
+                break;
+            }
+            else{
+                String command = this.buffer_command.get(0);
+                this.buffer_command.remove(0);
+                this.executeCommand(command, time, command_v);
+                n--;
+            }
+        }
+    }
+    
+    //Execute all the commands in the buffer
+    public void executeAllBufferCommands(Principal_view command_v){
+        while( this.buffer_command.isEmpty() == false ){
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+            Date date = new Date();  
+            String time = formatter.format(date);
+            String command = this.buffer_command.get(0);
+            this.buffer_command.remove(0);
+            this.executeCommand(command, time, command_v);
+        }
+        String message = time+" Se han agotado los comandos del archivo...\n\n";
+        command_v.writeInConsole(message);
+    }
+    //FILE END ********************************************
+    // **********************************************************************
+    
+    
     public void IndirectSendOpt(){
         //Aqui se preguntan las condiciones que deben ser preguntadas para
         //decidir como enviar los datos a la cola, no esta implementado aun 
@@ -443,6 +534,7 @@ public class ProcessController {
         //"NOT IMPLEMENTED YET";
     }
     
+     
     public MessageLog getMessageLog() {
         return messageLog;
     }
@@ -469,6 +561,7 @@ public class ProcessController {
 
     public void setCommand_file(File command_file) {
         this.command_file = command_file;
+        this.loadCommandsToBuffer();
     }
 
     public int getN_stop() {

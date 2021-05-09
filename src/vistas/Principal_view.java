@@ -84,8 +84,15 @@ public class Principal_view extends javax.swing.JFrame {
     }
 
     public void load_file(){
+        
         this.configurador.setCommand_file(this.command__file);
         this.configurador.setN_stop(this.n_command);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+        Date date = new Date();  
+        String time = formatter.format(date);
+        String message = time+" ARCHIVO_CARGADO: Se ha cargado el documento '"
+                + this.command__file.getName() + "' al programa\n\n";
+        this.writeInConsole(message);
     }
     
     
@@ -114,8 +121,8 @@ public class Principal_view extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
-        reiniciar_button = new javax.swing.JMenuItem();
         leer_btn = new javax.swing.JMenuItem();
+        reiniciar_button = new javax.swing.JMenuItem();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -259,14 +266,6 @@ public class Principal_view extends javax.swing.JFrame {
 
         reset_btn.setText("Opciones");
 
-        reiniciar_button.setText("Reiniciar");
-        reiniciar_button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reiniciar_buttonActionPerformed(evt);
-            }
-        });
-        reset_btn.add(reiniciar_button);
-
         leer_btn.setText("Leer archivo");
         leer_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,6 +273,14 @@ public class Principal_view extends javax.swing.JFrame {
             }
         });
         reset_btn.add(leer_btn);
+
+        reiniciar_button.setText("Reiniciar");
+        reiniciar_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reiniciar_buttonActionPerformed(evt);
+            }
+        });
+        reset_btn.add(reiniciar_button);
 
         jMenuBar1.add(reset_btn);
 
