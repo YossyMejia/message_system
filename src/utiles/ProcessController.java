@@ -17,6 +17,8 @@ public class ProcessController {
     
     //Variables
     private int cantidad_procesos;  //quantity of process specified by the user
+    private int cantidad_mailboxes; //quantity of mailboxes specified by the user
+    private int largo_cola;         //queue length
     private String sincr_receive_opt;  //sincronization recevie option (could be blocking, nonblocking, test for arrival
     private String sincr_send_opt;     //sincronization send option (could be blocking, nonblocking)
     private String addressing_type;    //addressing type (could be direct or indirect) 
@@ -26,6 +28,7 @@ public class ProcessController {
     private MessageLog messageLog;
     private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<Process> processes = new ArrayList<Process>();
+    private ArrayList<Mailbox> mailboxes = new ArrayList<Mailbox>();
     private String output_message; //The execution result message
     private String time; //The actual time 
     
@@ -51,6 +54,7 @@ public class ProcessController {
     //Call the create processes and create mailbox functions
     public void create(){
         this.createProcesses();
+        this.createMailboxes();
         //Llamar a crear el mailbox en caso de que la configuracion lo necesite
     }
     
@@ -62,8 +66,7 @@ public class ProcessController {
             this.processes.add(process);
             cantidad_procesos -= 1;
         }
-    }
-     
+    }  
     
     //Return the process that match with the ID 
     public Process getProcessByID(String ID){
@@ -459,6 +462,36 @@ public class ProcessController {
     
     //DIRECT MODE FUNCTIONS END ********************************************
     // **********************************************************************
+ 
+    //INDIRECT MODE FUNCTIONS *************************************************
+    // **********************************************************************
+
+    public int getCantidad_mailboxes() {
+        return cantidad_mailboxes;
+    }
+
+    public void setCantidad_mailboxes(int cantidad_mailboxes) {
+        this.cantidad_mailboxes = cantidad_mailboxes;
+    }
+
+    public int getLargo_cola() {
+        return largo_cola;
+    }
+
+    public void setLargo_cola(int largo_cola) {
+        this.largo_cola = largo_cola;
+    }
+    
+    
+    //Create N mailboxes specified by the user 
+    public void createMailboxes(){
+        while (cantidad_mailboxes != 0){
+            String id =  "p"+Integer.toString(cantidad_mailboxes);
+            Mailbox mailbox = new Mailbox(id, largo_cola);
+            this.mailboxes.add(mailbox);
+            cantidad_mailboxes -= 1;
+        }
+    }      
     
      //FILE FUNCTIONS ********************************************
     // **********************************************************************
@@ -534,6 +567,23 @@ public class ProcessController {
         //"NOT IMPLEMENTED YET";
     }
     
+    //Finds mailbox by ID 
+    public Mailbox getMailboxByID(String ID){
+        Mailbox mail_find = null;
+        for (Mailbox mail: this.mailboxes) {
+            if(mail.getMailbox_id().equals(ID)){
+                mail_find = mail;
+                break;
+            }
+        }
+        return mail_find;
+    }
+    
+     //INDIRECT MODE FUNCTIONS END ********************************************
+    // **********************************************************************  
+    
+    
+      
      
     public MessageLog getMessageLog() {
         return messageLog;
