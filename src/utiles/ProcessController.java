@@ -492,7 +492,39 @@ public class ProcessController {
             cantidad_mailboxes -= 1;
         }
     }      
+  
+    public void IndirectSendOpt(){
+        //Aqui se preguntan las condiciones que deben ser preguntadas para
+        //decidir como enviar los datos a la cola, no esta implementado aun 
+        //primero se esta implementando la parte de entrega de mensajes sin un 
+        //mailbox asociado
+        //"NOT IMPLEMENTED YET";
+    }
+
+     public void IndirectReceiveOpt(){
+        //Aqui se preguntan las condiciones que deben ser preguntadas para
+        //decidir como enviar los datos a la cola, no esta implementado aun 
+        //primero se esta implementando la parte de entrega de mensajes sin un 
+        //mailbox asociado
+        //"NOT IMPLEMENTED YET";
+    }
     
+    //Finds mailbox by ID 
+    public Mailbox getMailboxByID(String ID){
+        Mailbox mail_find = null;
+        for (Mailbox mail: this.mailboxes) {
+            if(mail.getMailbox_id().equals(ID)){
+                mail_find = mail;
+                break;
+            }
+        }
+        return mail_find;
+    }
+    
+     //INDIRECT MODE FUNCTIONS END ********************************************
+    // **********************************************************************  
+    
+      
      //FILE FUNCTIONS ********************************************
     // **********************************************************************
      
@@ -549,40 +581,6 @@ public class ProcessController {
     }
     //FILE END ********************************************
     // **********************************************************************
-    
-    
-    public void IndirectSendOpt(){
-        //Aqui se preguntan las condiciones que deben ser preguntadas para
-        //decidir como enviar los datos a la cola, no esta implementado aun 
-        //primero se esta implementando la parte de entrega de mensajes sin un 
-        //mailbox asociado
-        //"NOT IMPLEMENTED YET";
-    }
-
-     public void IndirectReceiveOpt(){
-        //Aqui se preguntan las condiciones que deben ser preguntadas para
-        //decidir como enviar los datos a la cola, no esta implementado aun 
-        //primero se esta implementando la parte de entrega de mensajes sin un 
-        //mailbox asociado
-        //"NOT IMPLEMENTED YET";
-    }
-    
-    //Finds mailbox by ID 
-    public Mailbox getMailboxByID(String ID){
-        Mailbox mail_find = null;
-        for (Mailbox mail: this.mailboxes) {
-            if(mail.getMailbox_id().equals(ID)){
-                mail_find = mail;
-                break;
-            }
-        }
-        return mail_find;
-    }
-    
-     //INDIRECT MODE FUNCTIONS END ********************************************
-    // **********************************************************************  
-    
-    
       
      
     public MessageLog getMessageLog() {
