@@ -83,7 +83,10 @@ public class Principal_view extends javax.swing.JFrame {
         this.n_command = n_command;
     }
 
-    
+    public void load_file(){
+        this.configurador.setCommand_file(this.command__file);
+        this.configurador.setN_stop(this.n_command);
+    }
     
     
     @SuppressWarnings("unchecked")

@@ -159,6 +159,7 @@ public class FileReader_view extends javax.swing.JFrame {
         //SI NO SELECCIONA ARCHIVO DARLE ERROR *********************************
         princ_v.setN_command(Integer.parseInt(this.N_label.getText()));
         princ_v.setCommand__file(this.file);
+        princ_v.load_file();
         Principal_view princ = princ_v;
         princ.setVisible(true);
         this.dispose();

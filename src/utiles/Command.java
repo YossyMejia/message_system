@@ -33,10 +33,13 @@ public class Command {
         
         Pattern pattern_continue = Pattern.compile("continue\\(\\)");
         
+        Pattern pattern_read = Pattern.compile("read\\(\\)");
+        
         Matcher match_send = pattern_send.matcher(this.command_input);   
         Matcher match_receive_explicit = pattern_receive_explicit.matcher(this.command_input);  
         Matcher match_receive_implicit = pattern_receive_implicit.matcher(this.command_input); 
         Matcher match_continue = pattern_continue.matcher(this.command_input);
+        Matcher match_read = pattern_read.matcher(this.command_input);
         
         if (match_send.matches()) {
             this.correct = true;
@@ -54,6 +57,10 @@ public class Command {
         else if(match_continue.matches()){
             this.correct = true;
             this.command_type = CommandTypes.CONTINUE.type;
+        }
+        else if(match_read.matches()){
+            this.correct = true;
+            this.command_type = CommandTypes.READ.type;
         }
         else{
             this.correct = false;
