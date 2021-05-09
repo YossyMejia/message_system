@@ -12,8 +12,8 @@ public enum ConfigOptions {
     //Opciones Addressing
     ADDRESSING_DIRECT("Directo"),
     ADDRESSING_INDIRECT("Indirecto"),
-    //ADDRESSING_STATIC(Dinamico),
-    //ADDRESSING_EXPLICIT(Estatico),
+    RECEIVE_IMPLICIT("Implícito"),
+    RECEIVE_EXPLICIT("Explícito"),
     INDIRECT_STATIC("Estatico"),
     INDIRECT_DINAMIC("Dinamico"),
     //Opciones formato

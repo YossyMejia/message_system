@@ -11,6 +11,7 @@ public class Process {
     private ArrayList<Message> buffer_messages = new ArrayList<Message>();
     private ArrayList<String>  log_messages = new ArrayList<String>(); //no cambiar el tipo del arrelgo esta en uso
     private String process_id;
+    private String UnblockProcessID;
 
     public Process(String id) {
         this.process_id = id;
@@ -68,5 +69,14 @@ public class Process {
     public void saveLogMessage(String message){
         this.log_messages.add(message);
     }
+
+    public String getUnblockProcessID() {
+        return UnblockProcessID;
+    }
+
+    public void setUnblockProcessID(String UnblockProcessID) {
+        this.UnblockProcessID = UnblockProcessID;
+    }
+    
     
 }

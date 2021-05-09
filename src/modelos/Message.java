@@ -149,7 +149,8 @@ public class Message {
     //Check if the message have length type have been set as fixed, if its true take just 
     //the first N elements of the message
     public void checkMessageOptions(){
-        if(this.LENGTH_TYPE == ConfigOptions.LENGTH_FIXED.option){
+        if(this.LENGTH_TYPE == ConfigOptions.LENGTH_FIXED.option &&
+                this.message.length() > this.LENGTH+1){
             this.message = this.message.substring(0,this.LENGTH+1);
         }
     }

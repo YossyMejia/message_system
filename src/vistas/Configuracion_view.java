@@ -16,6 +16,7 @@ public class Configuracion_view extends javax.swing.JFrame {
      private String addressing_type;
      private String message_length_type;
      private String message_content_type;
+     private String addressing_direct_receive;
      private int message_lenght;
      
     public Configuracion_view() {
@@ -32,6 +33,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.turn_off_options(tamano_cola);
         this.turn_off_options(cantidad_mailbox_label);
         this.turn_off_options(cantidad_mailbox);
+        this.direcc_cb2.setEnabled(false);
         
         //Haciendo invisibles los botones de ayuda 
         this.queueDisc_help_button.setVisible(false);
@@ -211,6 +213,7 @@ public class Configuracion_view extends javax.swing.JFrame {
 
         direcc_cb3.setBackground(new java.awt.Color(153, 153, 153));
         direcc_cb3.setForeground(new java.awt.Color(0, 0, 0));
+        direcc_cb3.setSelected(true);
         direcc_cb3.setText("Explícito");
         direcc_cb3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -317,7 +320,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         label_cantidad_caracteres.setText("Cantidad de caracteres: ");
         jPanel1.add(label_cantidad_caracteres, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 240, 160, 30));
 
-        cantidad_caracteres.setText("1");
+        cantidad_caracteres.setText("100");
         cantidad_caracteres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cantidad_caracteresActionPerformed(evt);
@@ -524,6 +527,13 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
         this.addressing_type = direccion_opciones.getSelectedItem().toString();
         
+        if(direcc_cb3.isSelected()){
+            this.addressing_direct_receive = direcc_cb3.getText();
+        }
+        else if(direcc_cb2.isSelected()){
+            this.addressing_direct_receive = direcc_cb2.getText();
+        }
+        
         //Set of the options to the message
         this.message_length_type = form_largo_opciones.getSelectedItem().toString();
         this.message_content_type = contenido_opciones.getSelectedItem().toString();
@@ -539,8 +549,10 @@ public class Configuracion_view extends javax.swing.JFrame {
             this.message_content_type);
         }
         
+        
+        
         this.configurador.setConfig(this.sincr_receive, this.sincr_send,
-                this.addressing_type, procesos);
+                this.addressing_type,this.addressing_direct_receive, procesos);
         this.configurador.create();
         this.dispose();
         Principal_view principal_v = new Principal_view(configurador);
