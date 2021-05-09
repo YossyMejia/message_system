@@ -1,6 +1,7 @@
 
 package vistas;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,9 @@ import utiles.ProcessController;
 public class Principal_view extends javax.swing.JFrame {
 
     public ProcessController configurador;
+    public File command__file;
+    public int n_command;
+    
     
     public Principal_view(ProcessController configurador) {
         initComponents();
@@ -54,6 +58,7 @@ public class Principal_view extends javax.swing.JFrame {
     public void help_messages(){
         this.command_help_btn.setEnabled(false);
         this.setHelpMessage(command_help_btn, HelpMessages.COMMAND_HELP.message);
+        this.setHelpMessage(process_help_btn, HelpMessages.PROCESS_LOG_HELP.message);
     }
     
     public void setHelpMessage(javax.swing.JComponent element, String message){
@@ -61,6 +66,25 @@ public class Principal_view extends javax.swing.JFrame {
         element.setToolTipText(message);
         element.setEnabled(false);
     }
+
+    public File getCommand__file() {
+        return command__file;
+    }
+
+    public void setCommand__file(File command__file) {
+        this.command__file = command__file;
+    }
+
+    public int getN_command() {
+        return n_command;
+    }
+
+    public void setN_command(int n_command) {
+        this.n_command = n_command;
+    }
+
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -83,6 +107,7 @@ public class Principal_view extends javax.swing.JFrame {
         command_field = new javax.swing.JTextField();
         send_command = new javax.swing.JButton();
         command_help_btn = new javax.swing.JButton();
+        process_help_btn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         reset_btn = new javax.swing.JMenu();
@@ -148,14 +173,20 @@ public class Principal_view extends javax.swing.JFrame {
         command_help_btn.setMinimumSize(new java.awt.Dimension(0, 0));
         command_help_btn.setPreferredSize(new java.awt.Dimension(800, 800));
 
+        process_help_btn.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        process_help_btn.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        process_help_btn.setMaximumSize(new java.awt.Dimension(0, 0));
+        process_help_btn.setMinimumSize(new java.awt.Dimension(0, 0));
+        process_help_btn.setPreferredSize(new java.awt.Dimension(800, 800));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 923, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -169,7 +200,9 @@ public class Principal_view extends javax.swing.JFrame {
                         .addGap(48, 48, 48)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(log_proceso_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(log_cola_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(log_cola_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(58, 58, 58)
+                        .addComponent(process_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(command_field, javax.swing.GroupLayout.PREFERRED_SIZE, 806, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -184,14 +217,18 @@ public class Principal_view extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(58, 58, 58)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cb_procesos, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(log_proceso_btn))
+                        .addContainerGap()
+                        .addComponent(command_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cb_procesos, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(log_proceso_btn))
+                            .addComponent(process_help_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(82, 82, 82)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cb_colas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,10 +313,12 @@ public class Principal_view extends javax.swing.JFrame {
     }
     
     private void leer_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leer_btnActionPerformed
-        FileReader_view file_reader_v = new FileReader_view();
+        FileReader_view file_reader_v = new FileReader_view(this);
         file_reader_v.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_leer_btnActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -335,6 +374,7 @@ public class Principal_view extends javax.swing.JFrame {
     private javax.swing.JMenuItem leer_btn;
     private javax.swing.JButton log_cola_btn;
     private javax.swing.JButton log_proceso_btn;
+    private javax.swing.JButton process_help_btn;
     private javax.swing.JMenuItem reiniciar_button;
     private javax.swing.JMenu reset_btn;
     private javax.swing.JButton send_command;

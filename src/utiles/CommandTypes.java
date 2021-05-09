@@ -5,7 +5,9 @@ package utiles;
 public enum CommandTypes {
     SEND ("SEND"),
     RECEIVE_EXPLICIT ("EXPLICIT RECEIVE"),
-    RECEIVE_IMPLICIT ("IMPLICIT RECEIVE");
+    RECEIVE_IMPLICIT ("IMPLICIT RECEIVE"),
+    READ ("READ"),
+    CONTINUE ("CONTINUE");
     
     public final String type;
     

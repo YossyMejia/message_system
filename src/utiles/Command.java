@@ -31,9 +31,12 @@ public class Command {
         Pattern pattern_receive_implicit = Pattern.compile("[a-zA-Z0-9\\s*\\S]+."
                 + "receive(\\s*)[(][)]");
         
+        Pattern pattern_continue = Pattern.compile("continue\\(\\)");
+        
         Matcher match_send = pattern_send.matcher(this.command_input);   
         Matcher match_receive_explicit = pattern_receive_explicit.matcher(this.command_input);  
         Matcher match_receive_implicit = pattern_receive_implicit.matcher(this.command_input); 
+        Matcher match_continue = pattern_continue.matcher(this.command_input);
         
         if (match_send.matches()) {
             this.correct = true;
@@ -47,6 +50,10 @@ public class Command {
         else if(match_receive_implicit.matches()){ 
             this.correct = true;
             this.extractReceiveImplicitData();
+        }
+        else if(match_continue.matches()){
+            this.correct = true;
+            this.command_type = CommandTypes.CONTINUE.type;
         }
         else{
             this.correct = false;

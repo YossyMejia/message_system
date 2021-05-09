@@ -63,7 +63,18 @@ public enum HelpMessages {
             + "el proceso que desea hacer el receive. <br>"
             + "- pID.receive(pID2) comando para hacer un receive explicito, donde <br>"
             + "pID es el proceso que desea hacer el receive y pID2 el proceso del que"
-            + "desea recibir.</html>");
+            + "desea recibir.</html>"),
+    
+    PROCESS_LOG_HELP ("<html>El usuario tiene la posibilidad de elegir un proceso <br>"
+            + "para poder ver su estado acutal y los mensajes LOG asociados a <br>"
+            + "este proceso y con los que ha tenido interaccion.</html>"),
+    
+    N_COMMAND_HELP ("<html>El usuario tiene la posibilidad de ingresar cada cuantos <br>"
+            + "comandos se debe para la ejecucion de los comandos del archivo <br> "
+            + "y esperar que el usuario decida continuarla (con el comando continue())</html>"),
+    
+    FILE_READER_HELP("<html>El usuario tiene la posibilidad de elegir un archivo <br>"
+            + "de texto del cual quiere leer comandos para el sistema de mensajes.</html>");
     
     
 

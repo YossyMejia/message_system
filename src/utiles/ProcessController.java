@@ -1,6 +1,7 @@
 
 package utiles;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import modelos.Process;
@@ -23,6 +24,9 @@ public class ProcessController {
     private ArrayList<Process> processes = new ArrayList<Process>();
     private String output_message; //The execution result message
     private String time; //The actual time 
+    
+    private static File command_file = null;
+    private static int N_stop = 0;
     
     public ProcessController() {
         
@@ -114,6 +118,12 @@ public class ProcessController {
                             + "en receive implicito y el comando es tipo explicito\n\n";
                     command_v.writeInConsole(message); //write in the view console
                 }
+            }
+            
+            else if(type == CommandTypes.CONTINUE.type){
+                if(this.command_file != null)
+                    System.out.println(this.command_file.getName());
+                System.out.println(this.N_stop);
             }
         }
         
@@ -444,6 +454,22 @@ public class ProcessController {
 
     public String getAddressing_type() {
         return addressing_type;
+    }
+
+    public File getCommand_file() {
+        return command_file;
+    }
+
+    public void setCommand_file(File command_file) {
+        command_file = command_file;
+    }
+
+    public int getN_stop() {
+        return N_stop;
+    }
+
+    public void setN_stop(int N_stop) {
+        N_stop = N_stop;
     }
     
     

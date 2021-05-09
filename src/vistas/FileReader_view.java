@@ -6,6 +6,10 @@
 package vistas;
 
 import java.io.File;
+import javax.swing.ToolTipManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import utiles.HelpMessages;
+import utiles.ProcessController;
 
 /**
  *
@@ -13,13 +17,31 @@ import java.io.File;
  */
 public class FileReader_view extends javax.swing.JFrame {
 
-    private File file;
+    public File file;
+    public int n;
+    private Principal_view princ_v;
     
-    public FileReader_view() {
+    public FileReader_view(Principal_view princ_v) {
+        this.princ_v = princ_v;
         initComponents();
         this.setDefaultCloseOperation(0);
+        this.help_messages();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
+        jFileChooser1.setFileFilter(filter);
     }
 
+    public void help_messages(){
+        this.setHelpMessage(n_help, HelpMessages.N_COMMAND_HELP.message);
+        this.setHelpMessage(file_help, HelpMessages.FILE_READER_HELP.message);
+    }
+    
+     public void setHelpMessage(javax.swing.JComponent element, String message){
+        ToolTipManager.sharedInstance().setDismissDelay(60000);
+        element.setToolTipText(message);
+        element.setEnabled(false);
+    }
+     
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,10 +52,14 @@ public class FileReader_view extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        file_help = new javax.swing.JButton();
+        n_help = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jFileChooser1 = new javax.swing.JFileChooser();
         Cancelar = new javax.swing.JButton();
         run_button = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        N_label = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(220, 220, 220));
@@ -42,9 +68,23 @@ public class FileReader_view extends javax.swing.JFrame {
         jPanel1.setForeground(new java.awt.Color(220, 220, 220));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        file_help.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        file_help.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        file_help.setMaximumSize(new java.awt.Dimension(0, 0));
+        file_help.setMinimumSize(new java.awt.Dimension(0, 0));
+        file_help.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(file_help, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 30, 30));
+
+        n_help.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
+        n_help.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        n_help.setMaximumSize(new java.awt.Dimension(0, 0));
+        n_help.setMinimumSize(new java.awt.Dimension(0, 0));
+        n_help.setPreferredSize(new java.awt.Dimension(800, 800));
+        jPanel1.add(n_help, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 30, 30));
+
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Lector de archivo");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, -1));
+        jLabel1.setText("Cantidad de comandos para parar: ");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 430, 200, -1));
 
         jFileChooser1.setCurrentDirectory(new java.io.File("C:\\Users\\XPC\\Desktop\\desktop.ini"));
         jFileChooser1.addActionListener(new java.awt.event.ActionListener() {
@@ -52,7 +92,7 @@ public class FileReader_view extends javax.swing.JFrame {
                 jFileChooser1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jFileChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 680, 340));
+        jPanel1.add(jFileChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 680, 340));
 
         Cancelar.setText("Cancelar");
         Cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -60,7 +100,7 @@ public class FileReader_view extends javax.swing.JFrame {
                 CancelarActionPerformed(evt);
             }
         });
-        jPanel1.add(Cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
+        jPanel1.add(Cancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 500, -1, -1));
 
         run_button.setText("Correr comandos");
         run_button.addActionListener(new java.awt.event.ActionListener() {
@@ -68,7 +108,19 @@ public class FileReader_view extends javax.swing.JFrame {
                 run_buttonActionPerformed(evt);
             }
         });
-        jPanel1.add(run_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 140, -1));
+        jPanel1.add(run_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 500, 140, -1));
+
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Lector de archivo");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 130, -1));
+
+        N_label.setText("0");
+        N_label.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                N_labelActionPerformed(evt);
+            }
+        });
+        jPanel1.add(N_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 430, 210, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,7 +132,9 @@ public class FileReader_view extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -88,6 +142,8 @@ public class FileReader_view extends javax.swing.JFrame {
 
     private void CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelarActionPerformed
         // TODO add your handling code here:
+        Principal_view princ = princ_v;
+        princ.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CancelarActionPerformed
 
@@ -100,8 +156,17 @@ public class FileReader_view extends javax.swing.JFrame {
     }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     private void run_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_run_buttonActionPerformed
-        System.out.println(this.file.getName());
+        //SI NO SELECCIONA ARCHIVO DARLE ERROR *********************************
+        princ_v.setN_command(Integer.parseInt(this.N_label.getText()));
+        princ_v.setCommand__file(this.file);
+        Principal_view princ = princ_v;
+        princ.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_run_buttonActionPerformed
+
+    private void N_labelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_N_labelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_N_labelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,16 +198,19 @@ public class FileReader_view extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FileReader_view().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Cancelar;
+    private javax.swing.JTextField N_label;
+    private javax.swing.JButton file_help;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton n_help;
     private javax.swing.JButton run_button;
     // End of variables declaration//GEN-END:variables
 }
