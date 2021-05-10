@@ -91,7 +91,7 @@ public class ProcessController {
             if(type == CommandTypes.SEND.type){
                 String message = time+" Tipo comando -> SEND: el proceso "+ this.command.getProcessID()  //LOG
                         +" invoca el comando, proceso destino: " + this.command.getDestination()
-                        + " y el mensaje es: "+this.command.getMessage()+"\n\n";
+                        + " y el mensaje es: "+this.command.getMessage();
                 command_v.writeInConsole(message); //write in the view console
                 sendCommand();
                 command_v.writeInConsole(this.output_message); //write in the view console
@@ -99,7 +99,7 @@ public class ProcessController {
             else if(type == CommandTypes.RECEIVE_IMPLICIT.type){
                 if(this.direct_receive_opt == ConfigOptions.RECEIVE_IMPLICIT.option){
                     String message = time+" Tipo comando -> RECIVE IMPLICITO: el proceso "              //LOG
-                        + this.command.getProcessID()+" invoca el comando \n\n";
+                        + this.command.getProcessID()+" invoca el comando";
                     command_v.writeInConsole(message); //write in the view console
                     receiveExplicitCommand();
                     command_v.writeInConsole(this.output_message); //write in the view console
@@ -116,7 +116,7 @@ public class ProcessController {
                 if(this.direct_receive_opt == ConfigOptions.RECEIVE_EXPLICIT.option){
                     String message = time+" Tipo comando -> RECIVE EXPLICITO: el proceso "              //LOG
                             + this.command.getProcessID()+" invoca el comando, desea leer "
-                            + "mensaje proveniente del proceso" + this.command.getSource() + " \n\n";
+                            + "mensaje proveniente del proceso " + this.command.getSource();
                     command_v.writeInConsole(message); //write in the view console
                     receiveExplicitCommand();
                     command_v.writeInConsole(this.output_message); //write in the view console
@@ -132,7 +132,7 @@ public class ProcessController {
             else if(type == CommandTypes.CONTINUE.type){
                 if(this.command_file != null){
                     String message = time+" Tipo comando -> CONTINUE: "
-                            + "Corriendo comandos desde archivo cargado....\n\n";
+                            + "Corriendo comandos desde archivo cargado...";
                     command_v.writeInConsole(message); //write in the view console
                     if(this.N_stop > 0){
                         this.executeNBufferCommands(command_v);
@@ -146,7 +146,7 @@ public class ProcessController {
                 }
                 else{
                     String message = time+" Tipo comando -> READ: "
-                            + "No se ha cargado ningun documento de comandos\n\n";
+                            + "No se ha cargado ningun documento de comandos";
                     command_v.writeInConsole(message); //write in the view console
                 }
             }
@@ -154,7 +154,7 @@ public class ProcessController {
             else if(type == CommandTypes.READ.type){
                 if(this.command_file != null){
                     String message = time+" Tipo comando -> READ: "
-                            + "Corriendo comandos desde archivo cargado....\n\n";
+                            + "Corriendo comandos desde archivo cargado...";
                     command_v.writeInConsole(message); //write in the view console
                     if(this.N_stop > 0)
                         this.executeNBufferCommands(command_v);
@@ -253,7 +253,7 @@ public class ProcessController {
                         + " se ha entregado al proceso '" + this.command.getDestination() 
                         + "' de forma exitosa \n\n";
 
-                this.sendSignalReceive(destination_process);
+                this.sendSignalReceive(destination_process, message);
 
                 if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
                         send_process.setReady(true); 
@@ -300,11 +300,19 @@ public class ProcessController {
     }
     
     //Send a signal to unlock the receive process
-    public void sendSignalReceive(Process process){
+    public void sendSignalReceive(Process process, Message message){
         if(this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option ){
             process.setBlocked(false);
+            process.setReady(false);
         }
-        process.setReady(true);
+        else if(this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option){
+           process.setBlocked(false);
+           process.setReady(false);
+           saveLogMessRTFA(process, message);
+        }
+        else{
+           process.setReady(true);
+        }
         process.setRunning(false);
         this.processes.set(this.processes.indexOf(process), process);
     }
@@ -316,8 +324,8 @@ public class ProcessController {
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + send_process.getBlocked() + " , Preparado: "
                     + send_process.getReady() + " , Corriendo: "
-                    + send_process.getRunning() + "\n\n";
-            send_process.saveLogMessage(this.output_message + extra_message);
+                    + send_process.getRunning()+"\n";
+            send_process.saveLogMessage(extra_message+this.output_message);
             this.processes.set(this.processes.indexOf(send_process), send_process);
         }
         catch(Exception e){}
@@ -330,15 +338,34 @@ public class ProcessController {
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + destination_process.getBlocked() + " , Preparado: "
                     + destination_process.getReady() + " , Corriendo: "
-                    + destination_process.getRunning() + "\n\n";
-            destination_process.saveLogMessage(this.output_message + extra_message);
+                    + destination_process.getRunning() +"\n";
+            destination_process.saveLogMessage(extra_message+this.output_message);
             this.processes.set(this.processes.indexOf(destination_process), destination_process);
         }
         catch(Exception e){}
     }
     
-    //SEND MODE --------------------
+    //Save a log message in the receive process that was in TFA mode
+    public void saveLogMessRTFA(Process process, Message message){
+       try{
+           this.output_message = this.time
+                   +" EXITOSO: El mensaje '"+ message.getMessage()
+                   +"' enviado por el proceso '"+ message.getSender().getProcess_id()+ "'"
+                   + " se ha leido por el proceso '" + process.getProcess_id()
+                   + "' de forma exitosa";
+            String extra_message = "PROCESO_ESTADO: Bloqueado: "
+                    + process.getBlocked() + " , Preparado: "
+                    + process.getReady() + " , Corriendo: "
+                    + process.getRunning() +"\n";
+            process.getBuffer_messages().remove(message);
+            System.out.println(process.getBuffer_messages().get(0));
+            process.saveLogMessage(extra_message+this.output_message);
+            this.processes.set(this.processes.indexOf(process), process);
+        }
+        catch(Exception e){}
+    }
     
+    //SEND MODE --------------------
     
     
     
@@ -356,7 +383,8 @@ public class ProcessController {
             }
             else{
                 this.output_message = this.time+" ERROR: El proceso '"+ this.command.getProcessID()
-                    +"' no ha podido leer ningun mensaje debido a que se encuentra bloqueado \n\n";
+                    +"' no ha podido leer ningun mensaje debido a que se encuentra bloqueado"
+                    +" esperando un mensaje de "+ receive_process.getUnblockProcessID() + " \n\n";
             }
         }
         catch(Exception e){
@@ -443,8 +471,8 @@ public class ProcessController {
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + send_process.getBlocked() + " , Preparado: "
                     + send_process.getReady() + " , Corriendo: "
-                    + send_process.getRunning() + "\n\n";
-            send_process.saveLogMessage(this.output_message + extra_message);
+                    + send_process.getRunning()+"\n";
+            send_process.saveLogMessage(extra_message+this.output_message);
             this.processes.set(this.processes.indexOf(send_process), send_process);
         }
         catch(Exception e){}
