@@ -244,7 +244,7 @@ public class ProcessController {
     //Create N mailboxes specified by the user 
     public void createMailboxes(){
         while (cantidad_mailboxes != 0){
-            String id =  "p"+Integer.toString(cantidad_mailboxes);
+            String id =  "m"+Integer.toString(cantidad_mailboxes);
             Mailbox mailbox = new Mailbox(id, largo_cola);
             this.mailboxes.add(mailbox);
             cantidad_mailboxes -= 1;
@@ -283,6 +283,10 @@ public class ProcessController {
         
     public ArrayList<Process> getProcesos() {
         return processes;
+    }
+
+    public ArrayList<Mailbox> getMailboxes() {
+        return mailboxes;
     }
 
     public String getOutput_message() {

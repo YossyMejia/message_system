@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.ToolTipManager;
 import modelos.Process;
+import modelos.Mailbox;
 import utiles.ConfigOptions;
 import utiles.HelpMessages;
 import utiles.ProcessController;
@@ -24,6 +25,7 @@ public class Principal_view extends javax.swing.JFrame {
         this.setResizable(false);
         this.configurador = configurador;
         this.fill_cb();
+        this.fill_cb_mb();
         command_line_field.setEditable(false);
         this.displayQueueOpt();
         this.help_messages();
@@ -34,6 +36,13 @@ public class Principal_view extends javax.swing.JFrame {
         ArrayList<Process> procesos = this.configurador.getProcesos();
         for (Process proceso: procesos) {
             this.cb_procesos.addItem(proceso.getProcess_id());
+        }
+    }
+
+    public void fill_cb_mb(){
+        ArrayList<Mailbox> mailboxes = this.configurador.getMailboxes();
+        for (Mailbox mailbox: mailboxes) {
+            this.cb_colas.addItem(mailbox.getMailbox_id());
         }
     }
     
@@ -107,6 +116,12 @@ public class Principal_view extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Procesos");
 
+        cb_procesos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_procesosActionPerformed(evt);
+            }
+        });
+
         jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Linea de comandos");
@@ -142,7 +157,6 @@ public class Principal_view extends javax.swing.JFrame {
             }
         });
 
-        command_help_btn.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto 1\\message_system\\src\\Imagenes\\help_icon.png")); // NOI18N
         command_help_btn.setMargin(new java.awt.Insets(0, 0, 0, 0));
         command_help_btn.setMaximumSize(new java.awt.Dimension(0, 0));
         command_help_btn.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -213,8 +227,6 @@ public class Principal_view extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 1050, 730));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon("E:\\User\\Documentos\\Semestres\\S1 - 2021\\SO\\Proyecto 1\\Proyecto_1\\src\\Imagenes\\fondo.jpg")); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 870));
 
         reset_btn.setText("Opciones");
@@ -244,6 +256,11 @@ public class Principal_view extends javax.swing.JFrame {
 
     private void log_cola_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_log_cola_btnActionPerformed
         // TODO add your handling code here:
+        String mailboxID = cb_colas.getSelectedItem().toString();
+        Mailbox mailbox_Selected = this.configurador.getMailboxByID(mailboxID);
+        MailboxLog_view mailboxlog_v = new MailboxLog_view (mailbox_Selected);
+        mailboxlog_v.setVisible(true);
+        
     }//GEN-LAST:event_log_cola_btnActionPerformed
 
     
@@ -279,6 +296,10 @@ public class Principal_view extends javax.swing.JFrame {
         FileReader_view file_reader_v = new FileReader_view();
         file_reader_v.setVisible(true);
     }//GEN-LAST:event_leer_btnActionPerformed
+
+    private void cb_procesosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_procesosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_procesosActionPerformed
 
     /**
      * @param args the command line arguments
