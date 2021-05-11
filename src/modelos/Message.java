@@ -156,22 +156,22 @@ public class Message  implements Comparable<Message>{
     
     //Constructor for the indirect mode
     //PriorityQueue
-    public Message(Process sender, String message, int priority, LocalDateTime LocalDateTimeCreated, String time) {
+    public Message(Process sender, String message, int priority, String time) {
         this.sender = sender;
         this.message = message;
         this.priority = priority;
-        this.LocalDateTimeCreated = LocalDateTimeCreated;
         this.time = time;
+        //this.message_id = id;
     }
  
     //Constructor for the indirect mode
     //FIFO
-    public Message(Process sender, String message, LocalDateTime LocalDateTimeCreated, String time) {
+    public Message(Process sender, String message, String time) {
         this.sender = sender;
         this.message = message;
         this.priority = 1;
-        this.LocalDateTimeCreated = LocalDateTimeCreated;
         this.time = time;
+        //this.message_id = id;
     }    
     
     @Override

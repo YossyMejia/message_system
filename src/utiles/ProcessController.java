@@ -257,7 +257,21 @@ public class ProcessController {
         //primero se esta implementando la parte de entrega de mensajes sin un 
         //mailbox asociado
         //"NOT IMPLEMENTED YET";
+        try {
+            
+        }
+        catch(Exception e) {
+            
+        }
+        
     }
+ 
+    //Create a message ONLY for the indirect mode 
+    public Message createMessageIndirectMode(Process send_process){
+        Message message = new Message(send_process, 
+                this.command.getMessage(), 1, this.time);
+        return message;
+    }    
     
     //Finds mailbox by ID 
     public Mailbox getMailboxByID(String ID){
