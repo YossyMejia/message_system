@@ -5,7 +5,7 @@ import java.time.*;
 import utiles.ConfigOptions;
 
 
-public class Message {
+public class Message  implements Comparable<Message>{
     
     private Process sender;
     private Process receiver;
@@ -153,5 +153,30 @@ public class Message {
                 this.message.length() > this.LENGTH+1){
             this.message = this.message.substring(0,this.LENGTH+1);
         }
+    }
+    
+    //Constructor for the indirect mode
+    //PriorityQueue
+    public Message(Process sender, String message, int priority, String time) {
+        this.sender = sender;
+        this.message = message;
+        this.priority = priority;
+        this.time = time;
+        //this.message_id = id;
+    }
+ 
+    //Constructor for the indirect mode
+    //FIFO
+    public Message(Process sender, String message, String time) {
+        this.sender = sender;
+        this.message = message;
+        this.priority = 1;
+        this.time = time;
+        //this.message_id = id;
+    }    
+    
+    @Override
+    public int compareTo(Message o) {
+      return 0;
     }
 }

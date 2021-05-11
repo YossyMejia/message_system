@@ -1,6 +1,7 @@
 
 package modelos;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -9,9 +10,12 @@ import java.util.PriorityQueue;
  */
 public class Mailbox {
     
-    private PriorityQueue queue;
+    private PriorityQueue<Message> queue;
     private String mailbox_id;
 
+    Comparator<Message> prioritySorter =
+         Comparator.comparing(Message::getPriority);
+    
     public String getMailbox_id() {
         return mailbox_id;
     }
@@ -41,11 +45,11 @@ public class Mailbox {
    
     public Mailbox(String id) {
         this.mailbox_id = id;
-        //this.queue = new PriorityQueue();
+        this.queue = new PriorityQueue<>(prioritySorter);
     }
     
     public void createQueue(int size) {
-        this.queue = new PriorityQueue(size);
+        this.queue  = new PriorityQueue<>(prioritySorter);
         
     }
 }

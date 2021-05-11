@@ -514,7 +514,7 @@ public class ProcessController {
     //Create N mailboxes specified by the user 
     public void createMailboxes(){
         while (cantidad_mailboxes != 0){
-            String id =  "p"+Integer.toString(cantidad_mailboxes);
+            String id =  "m"+Integer.toString(cantidad_mailboxes);
             Mailbox mailbox = new Mailbox(id, largo_cola);
             this.mailboxes.add(mailbox);
             cantidad_mailboxes -= 1;
@@ -527,7 +527,21 @@ public class ProcessController {
         //primero se esta implementando la parte de entrega de mensajes sin un 
         //mailbox asociado
         //"NOT IMPLEMENTED YET";
+        try {
+            
+        }
+        catch(Exception e) {
+            
+        }
+        
     }
+ 
+    //Create a message ONLY for the indirect mode 
+    public Message createMessageIndirectMode(Process send_process){
+        Message message = new Message(send_process, 
+                this.command.getMessage(), 1, this.time);
+        return message;
+    }    
 
      public void IndirectReceiveOpt(){
         //Aqui se preguntan las condiciones que deben ser preguntadas para
@@ -621,6 +635,10 @@ public class ProcessController {
         
     public ArrayList<Process> getProcesos() {
         return processes;
+    }
+
+    public ArrayList<Mailbox> getMailboxes() {
+        return mailboxes;
     }
 
     public String getOutput_message() {
