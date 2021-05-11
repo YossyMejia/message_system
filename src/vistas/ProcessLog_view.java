@@ -30,7 +30,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
                     + proceso.getRunning() + "\n";
         this.proceso_status_lable.setText(status);
         this.process_id_label.setText(proceso.getProcess_id());
-        this.log_info.setEnabled(false);
+        //this.log_info.setEnabled(false);
         for (String mensaje: this.proceso.getLog_messages()) {
             this.log_info.append(mensaje);
         }
