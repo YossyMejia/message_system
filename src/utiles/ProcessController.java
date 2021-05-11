@@ -526,7 +526,6 @@ public class ProcessController {
             Process send_process = this.getProcessByID(this.command.getProcessID());
             if(send_process.getBlocked() == false){
                 this.indirectMessage(send_process);
-                this.output_message = "mensaje indirecto enviado por " + this.command.getProcessID() + "\n\n";
             }
             else{
                 this.output_message = this.time+" ERROR: El mensaje '"+ command.getMessage()
@@ -539,7 +538,6 @@ public class ProcessController {
             this.output_message = this.time+" ERROR: El identificador '"
                     + this.command.getProcessID()+ "' no coincide con ningun proceso \n\n";            
         }
-        
     }
 
        //create a message and send it to the destination mailbox
@@ -554,21 +552,31 @@ public class ProcessController {
         Message message = new Message(send_process, 
                 this.command.getMessage(), 1, this.time);
         return message;
-    }    
+    }
+    
+    public Boolean verifyQueue(Mailbox mailbox) {
+        
+        int queue_available = mailbox.getQueue().size();
+        if (queue_available < this.largo_cola){
+            return true;}
+        else {
+        return false;}
+    }
 
     //Send a message  ONLY for the indirect mode 
     public void sendMessageIndirectMode(Message message, Mailbox destination_mailbox, 
-            Process send_process) {       
+            Process send_process) {
         try{
-            if (/*Receive available. Queue, exists, not full*/1==1) {
-                //meter en la cola
-                //destination_mailbox.getQueue().add(message);
-                //Message top = (Message) destination_mailbox.getQueue().element();
-                System.out.println("sendMessageIndirectMode " + message.getMessage() + " por que no hace el output_message");
-                this.output_message = this.time+" EXITOSO: El mensaje '"+ message.getMessage()
+            /*Receive available. Queue, exists, not full*/
+            Boolean queue_notfull = verifyQueue(destination_mailbox);
+            if (queue_notfull) {
+                String message_local = message.getMessage();
+                this.setOutput_message(this.time+" EXITOSO: El mensaje '"+ message_local
                         +"' enviado por el proceso '"+this.command.getProcessID()+ "'"
                         + " ha sido ingresado a la cola '" + this.command.getDestination() 
-                        + "' de forma exitosa \n\n";
+                        + "' de forma exitosa \n\n");
+                //meter en la cola
+                destination_mailbox.getQueue().add(message);  
                 
                 if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
                         send_process.setReady(true); 
@@ -587,13 +595,17 @@ public class ProcessController {
                     +this.command.getDestination() + " debido a que el mailbox "
                     + "se encuentra lleno. \n\n'";                
             }
+
         }        
         catch(Exception e){
+
             this.output_message = this.time+" ERROR: No se ha podido ingresar el"
                     + " mensaje '"+ message.getMessage()+ "' enviado por '"
                     +this.command.getProcessID() + "' al mailbox '"
-                    +this.command.getDestination() + " por excepcion general. \n\n";            
+                    +this.command.getDestination() + " porque el receptor no existe "
+                    + "o no es un mailbox. \n\n";
         }
+
     }
 
     //RECEIVE MODE ----------------- 
@@ -693,6 +705,10 @@ public class ProcessController {
 
     public ArrayList<Mailbox> getMailboxes() {
         return mailboxes;
+    }
+
+    public void setOutput_message(String output_message) {
+        this.output_message = output_message;
     }
 
     public String getOutput_message() {
