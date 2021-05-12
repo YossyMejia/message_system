@@ -25,7 +25,7 @@ public class ProcessController {
     private String direct_receive_opt; //Adressing direct receive options (explicit or implicit)
     
     private Command command;           //store the command object descomposed
-    private MessageLog messageLog;
+    private MessageLog messageLog = new MessageLog();
     private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<Process> processes = new ArrayList<Process>();
     private ArrayList<Mailbox> mailboxes = new ArrayList<Mailbox>();
@@ -514,7 +514,7 @@ public class ProcessController {
     public void createMailboxes(){
         while (cantidad_mailboxes != 0){
             String id =  "m"+Integer.toString(cantidad_mailboxes);
-            Mailbox mailbox = new Mailbox(id, largo_cola);
+            Mailbox mailbox = new Mailbox(id, this.largo_cola);
             this.mailboxes.add(mailbox);
             cantidad_mailboxes -= 1;
         }
@@ -538,6 +538,8 @@ public class ProcessController {
             this.output_message = this.time+" ERROR: El identificador '"
                     + this.command.getProcessID()+ "' no coincide con ningun proceso \n\n";            
         }
+        this.saveLogMessSProcessSend();    //save the log message in the send process
+        this.saveLogMessQueue();           //save the log message in the receiving queue
     }
 
        //create a message and send it to the destination mailbox
@@ -607,7 +609,21 @@ public class ProcessController {
         }
 
     }
-
+    
+    public void saveLogMessQueue() {
+        try {
+            Mailbox destination_mailbox = this.getMailboxByID(this.command.getDestination());
+            String extra_message = "MAILBOX ESTADO: Tamaño: "
+                    + destination_mailbox.getQueue().size() + " , Capacidad:"
+                    + this.largo_cola+"\n";
+            this.messageLog.saveLogMessage(extra_message+this.output_message);
+            this.mailboxes.set(this.mailboxes.indexOf(destination_mailbox), destination_mailbox);
+        }
+        catch (Exception e) {
+            
+        }
+    }
+    
     //RECEIVE MODE ----------------- 
      public void IndirectReceiveOpt(){
         //Aqui se preguntan las condiciones que deben ser preguntadas para
