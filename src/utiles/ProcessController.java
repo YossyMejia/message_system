@@ -626,13 +626,33 @@ public class ProcessController {
     
     //RECEIVE MODE ----------------- 
      public void IndirectReceiveOpt(){
-        //Aqui se preguntan las condiciones que deben ser preguntadas para
-        //decidir como enviar los datos a la cola, no esta implementado aun 
-        //primero se esta implementando la parte de entrega de mensajes sin un 
-        //mailbox asociado
-        //"NOT IMPLEMENTED YET";
+        try {
+            Process receive_process = this.getProcessByID(this.command.getProcessID());
+            Mailbox source_mailbox = this.getMailboxByID(this.command.getSource());
+            if(receive_process.getBlocked() == false){
+                
+                /*if(this.command.getCommand_type() == CommandTypes.INDIRECT_STATIC.type)*/
+                    this.removeQueueImplicit(receive_process);
+                /*else if(this.command.getCommand_type() == CommandTypes.INDIRECT_DINAMIC.type)*/
+                    this.removeQueueExplicit(source_mailbox, receive_process);
+            }
+        }
+        catch (Exception e) {
+            
+        }
     }
-    
+
+    /*Removes message from Queue in Implicit mode
+     
+     */
+    public void  removeQueueImplicit(Process receive_process) {
+        
+    }
+ 
+    public void  removeQueueExplicit(Mailbox source_mailbox, Process receive_process) {
+        
+    }
+        
     //Finds mailbox by ID 
     public Mailbox getMailboxByID(String ID){
         Mailbox mail_find = null;
