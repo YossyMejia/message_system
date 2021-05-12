@@ -17,6 +17,7 @@ public class Configuracion_view extends javax.swing.JFrame {
      private String message_length_type;
      private String message_content_type;
      private String addressing_direct_receive;
+     private String indirect_type;
      private int message_lenght;
      
     public Configuracion_view() {
@@ -523,6 +524,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         this.sincr_send = sincro_send_options.getSelectedItem().toString();
         this.sincr_receive = sincro_receive_options.getSelectedItem().toString();
         this.addressing_type = direccion_opciones.getSelectedItem().toString();
+        this.indirect_type = dir_indirecto_ops.getSelectedItem().toString();
         
         if(direcc_cb3.isSelected()){
             this.addressing_direct_receive = direcc_cb3.getText();
@@ -549,6 +551,7 @@ public class Configuracion_view extends javax.swing.JFrame {
         if (this.addressing_type == ConfigOptions.ADDRESSING_INDIRECT.option) {
             this.configurador.setCantidad_mailboxes(mailboxes);
             this.configurador.setLargo_cola(largo_cola);
+            this.configurador.setIndirect_opt(indirect_type);
         }
         
         this.configurador.setConfig(this.sincr_receive, this.sincr_send,

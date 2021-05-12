@@ -23,7 +23,7 @@ public class ProcessController {
     private String sincr_send_opt;     //sincronization send option (could be blocking, nonblocking)
     private String addressing_type;    //addressing type (could be direct or indirect) 
     private String direct_receive_opt; //Adressing direct receive options (explicit or implicit)
-    
+    private String indirect_opt;       //Indirect addressing options (static or dynamic)
     private Command command;           //store the command object descomposed
     private MessageLog messageLog = new MessageLog();
     private ArrayList<Message> messages = new ArrayList<Message>();
@@ -116,7 +116,7 @@ public class ProcessController {
                 if(this.direct_receive_opt == ConfigOptions.RECEIVE_EXPLICIT.option){
                     String message = time+" Tipo comando -> RECEIVE EXPLICITO: el proceso "              //LOG
                             + this.command.getProcessID()+" invoca el comando, desea leer "
-                            + "mensaje proveniente del proceso " + this.command.getSource();
+                            + "mensaje proveniente de " + this.command.getSource();
                     command_v.writeInConsole(message); //write in the view console
                     receiveExplicitCommand();
                     command_v.writeInConsole(this.output_message); //write in the view console
@@ -611,7 +611,7 @@ public class ProcessController {
             this.output_message = this.time+" ERROR: No se ha podido ingresar el"
                     + " mensaje '"+ message.getMessage()+ "' enviado por '"
                     +this.command.getProcessID() + "' al mailbox '"
-                    +this.command.getDestination() + " porque el receptor no existe "
+                    +this.command.getDestination() + "' porque el receptor no existe "
                     + "o no es un mailbox. \n\n";
         }
 
@@ -630,34 +630,126 @@ public class ProcessController {
             
         }
     }
+
+    public void saveLogMessSourceQueue() {
+        try {
+            Mailbox source_mailbox = this.getMailboxByID(this.command.getSource());
+            String extra_message = "MAILBOX ESTADO: Tamaño: "
+                    + source_mailbox.getQueue().size() + " , Capacidad:"
+                    + this.largo_cola+"\n";
+            this.messageLog.saveLogMessage(extra_message+this.output_message);
+            this.mailboxes.set(this.mailboxes.indexOf(source_mailbox), source_mailbox);
+        }
+        catch (Exception e) {
+            
+        }
+    }
     
     //RECEIVE MODE ----------------- 
      public void IndirectReceiveOpt(){
         try {
             Process receive_process = this.getProcessByID(this.command.getProcessID());
             Mailbox source_mailbox = this.getMailboxByID(this.command.getSource());
-            if(receive_process.getBlocked() == false){
-                
-                /*if(this.command.getCommand_type() == CommandTypes.INDIRECT_STATIC.type)*/
-                    this.removeQueueImplicit(receive_process);
-                /*else if(this.command.getCommand_type() == CommandTypes.INDIRECT_DINAMIC.type)*/
-                    this.removeQueueExplicit(source_mailbox, receive_process);
+            if (!source_mailbox.getQueue().isEmpty())
+            {
+                if(receive_process.getBlocked() == false){
+                    if (this.indirect_opt == ConfigOptions.INDIRECT_STATIC.option) {
+
+                        this.removeQueueStatic(receive_process);
+                    }
+                    else if (this.indirect_opt == ConfigOptions.INDIRECT_DINAMIC.option) {
+
+                        this.removeQueueDynamic(source_mailbox, receive_process);
+                    }
+                }
+                else {
+                    //receiving process is blocked
+                    this.output_message = this.time+" ERROR: El mensaje '"+ command.getMessage()
+                        +"' no se ha liberado de '"+ source_mailbox.getMailbox_id() + "'"
+                        + " debido a que el proceso receptor '" + receive_process.getProcess_id()
+                        + "' se encuentra bloqueado \n\n";                
+                }
+            }
+            else {
+                //source mailbox is empty
+                this.output_message = this.time+" ERROR: No se puede "
+                    +" recibir ningun mensaje del mailbox '"+ this.command.getSource() + "'"
+                    + " debido a que se encuentra vacio \n\n";     
             }
         }
         catch (Exception e) {
-            
+            this.output_message = this.time+" ERROR: El identificador '"
+                    + this.command.getSource()+ "' no coincide con ningun mailbox \n\n";            
         }
+        this.saveLogMessRProcessReceive();    //save the log message in the receive process
+        this.saveLogMessSourceQueue();        //save the log message in the source queue
     }
 
-    /*Removes message from Queue in Implicit mode
-     
-     */
-    public void  removeQueueImplicit(Process receive_process) {
-        
+    //Removes message from Queue in Static mode
+    public void  removeQueueStatic(Process receive_process) {
+        //try {
+            if (this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option 
+                    || this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option) {
+                receive_process.setBlocked(true);
+                receive_process.setReady(false);
+                receive_process.setRunning(false);
+                receive_process.setUnblockProcessID(this.command.getSource());
+                
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                        +"' en la cola '"+ command.getSource()+ "'"
+                        + " se ha leido por el proceso '" + this.command.getProcessID()
+                        + "' de forma exitosa \n\n";
+                
+                //sacar cola
+                
+            }
+            else if (this.sincr_receive_opt == ConfigOptions.RECEIVE_NONBLOCKIN.option){
+                
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                        +"' en la cola '"+ command.getSource()+ "'"
+                        + " se ha leido por el proceso '" + this.command.getProcessID()
+                        + "' de forma exitosa \n\n";
+                
+                //sacar cola
+            }
+            
+        /*}
+        catch (Exception e) {
+            
+        }*/
     }
  
-    public void  removeQueueExplicit(Mailbox source_mailbox, Process receive_process) {
-        
+    //Removes message from Queue in Dynamic mode
+    public void  removeQueueDynamic(Mailbox source_mailbox, Process receive_process) {
+        //try {
+            if (this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option 
+                    || this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option) {
+                receive_process.setBlocked(true);
+                receive_process.setReady(false);
+                receive_process.setRunning(false);
+                receive_process.setUnblockProcessID(this.command.getSource());
+                
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                        +"' en la cola '"+ command.getSource()+ "'"
+                        + " se ha leido por el proceso '" + this.command.getProcessID()
+                        + "' de forma exitosa \n\n";
+                
+                //sacar cola
+                
+            }
+            else if (this.sincr_receive_opt == ConfigOptions.RECEIVE_NONBLOCKIN.option){
+                
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                        +"' en la cola '"+ command.getSource()+ "'"
+                        + " se ha leido por el proceso '" + this.command.getProcessID()
+                        + "' de forma exitosa \n\n";
+                
+                //sacar cola
+            }         
+        /*}
+        catch (Exception e) {
+            
+        }*/      
     }
         
     //Finds mailbox by ID 
@@ -756,6 +848,14 @@ public class ProcessController {
 
     public String getOutput_message() {
         return output_message;
+    }
+
+    public String getIndirect_opt() {
+        return indirect_opt;
+    }
+
+    public void setIndirect_opt(String indirect_opt) {
+        this.indirect_opt = indirect_opt;
     }
 
     public String getAddressing_type() {
