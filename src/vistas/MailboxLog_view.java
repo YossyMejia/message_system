@@ -7,6 +7,7 @@ package vistas;
 
 import javax.swing.JRootPane;
 import modelos.Mailbox;
+import modelos.MessageLog;
 
 /**
  *
@@ -15,6 +16,7 @@ import modelos.Mailbox;
 public class MailboxLog_view extends javax.swing.JFrame {
 
     Mailbox mailbox;
+    MessageLog log;
     
     public MailboxLog_view(Mailbox mailbox) {
         initComponents();
@@ -22,15 +24,27 @@ public class MailboxLog_view extends javax.swing.JFrame {
         setInfo();
         this.setDefaultCloseOperation(0);
     }
-
+    
+    public MailboxLog_view(Mailbox mailbox, MessageLog log) {
+        initComponents();
+        this.mailbox = mailbox;
+        this.log = log;
+        setInfo();
+        this.setDefaultCloseOperation(0);
+    }
+    
     public void setInfo(){
         
-        String status = "";
+        String status = "MAILBOX ESTADO: Tamaño: "
+                    + mailbox.getQueue().size() +"\n";
         this.mailbox_status_lable.setText(status);
         this.mailbox_id_label.setText(mailbox.getMailbox_id());
-        this.log_info.setEnabled(false);
-        
+        //this.log_info.setEnabled(false);
+        //this.log_info.append("Listado de mensajes");
         //mostrar contenido de los mensajes
+        for (String mensaje: this.log.getLog_messages()) {
+            this.log_info.append(mensaje);
+        }        
 
         
     }

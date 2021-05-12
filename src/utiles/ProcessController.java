@@ -25,7 +25,7 @@ public class ProcessController {
     private String direct_receive_opt; //Adressing direct receive options (explicit or implicit)
     
     private Command command;           //store the command object descomposed
-    private MessageLog messageLog;
+    private MessageLog messageLog = new MessageLog();
     private ArrayList<Message> messages = new ArrayList<Message>();
     private ArrayList<Process> processes = new ArrayList<Process>();
     private ArrayList<Mailbox> mailboxes = new ArrayList<Mailbox>();
@@ -90,7 +90,7 @@ public class ProcessController {
             
             if(type == CommandTypes.SEND.type){
                 String message = time+" Tipo comando -> SEND: el proceso "+ this.command.getProcessID()  //LOG
-                        +" invoca el comando, proceso destino: " + this.command.getDestination()
+                        +" invoca el comando, el destino es: " + this.command.getDestination()
                         + " y el mensaje es: "+this.command.getMessage();
                 command_v.writeInConsole(message); //write in the view console
                 sendCommand();
@@ -98,14 +98,14 @@ public class ProcessController {
             }
             else if(type == CommandTypes.RECEIVE_IMPLICIT.type){
                 if(this.direct_receive_opt == ConfigOptions.RECEIVE_IMPLICIT.option){
-                    String message = time+" Tipo comando -> RECIVE IMPLICITO: el proceso "              //LOG
+                    String message = time+" Tipo comando -> RECEIVE IMPLICITO: el proceso "              //LOG
                         + this.command.getProcessID()+" invoca el comando";
                     command_v.writeInConsole(message); //write in the view console
                     receiveExplicitCommand();
                     command_v.writeInConsole(this.output_message); //write in the view console
                 }
                 else{
-                    String message = time+" Tipo comando -> RECIVE IMPLICITO: "
+                    String message = time+" Tipo comando -> RECEIVE IMPLICITO: "
                             + "comando invalido la configuracion esta establecida "
                             + "en receive explicito y el comando es tipo implicito\n\n";
                     command_v.writeInConsole(message); //write in the view console
@@ -114,7 +114,7 @@ public class ProcessController {
             }
             else if(type == CommandTypes.RECEIVE_EXPLICIT.type){
                 if(this.direct_receive_opt == ConfigOptions.RECEIVE_EXPLICIT.option){
-                    String message = time+" Tipo comando -> RECIVE EXPLICITO: el proceso "              //LOG
+                    String message = time+" Tipo comando -> RECEIVE EXPLICITO: el proceso "              //LOG
                             + this.command.getProcessID()+" invoca el comando, desea leer "
                             + "mensaje proveniente del proceso " + this.command.getSource();
                     command_v.writeInConsole(message); //write in the view console
@@ -122,7 +122,7 @@ public class ProcessController {
                     command_v.writeInConsole(this.output_message); //write in the view console
                 }
                 else{
-                    String message = time+" Tipo comando -> RECIVE EXPLICITO: "
+                    String message = time+" Tipo comando -> RECEIVE EXPLICITO: "
                             + "comando invalido la configuracion esta establecida "
                             + "en receive implicito y el comando es tipo explicito\n\n";
                     command_v.writeInConsole(message); //write in the view console
@@ -213,9 +213,9 @@ public class ProcessController {
             }
             else{
                 this.output_message = this.time+" ERROR: El mensaje '"+ command.getMessage()
-                    +"' enviado por el proceso '"+this.command.getProcessID()+ "'"
-                    + " no se ha entregado al proceso '" + this.command.getDestination() 
-                    + "' debido a que el proceso emisor se encuentra bloqueado \n\n";
+                    +"' no se ha enviado a '"+this.command.getDestination() + "'"
+                    + " debido a que el proceso emisor '" + this.command.getProcessID()
+                    + "' se encuentra bloqueado \n\n";
             }
 
         }
@@ -516,48 +516,150 @@ public class ProcessController {
     public void setLargo_cola(int largo_cola) {
         this.largo_cola = largo_cola;
     }
-    
-    
+     
     //Create N mailboxes specified by the user 
     public void createMailboxes(){
         while (cantidad_mailboxes != 0){
             String id =  "m"+Integer.toString(cantidad_mailboxes);
-            Mailbox mailbox = new Mailbox(id, largo_cola);
+            Mailbox mailbox = new Mailbox(id, this.largo_cola);
             this.mailboxes.add(mailbox);
             cantidad_mailboxes -= 1;
         }
     }      
   
     public void IndirectSendOpt(){
-        //Aqui se preguntan las condiciones que deben ser preguntadas para
-        //decidir como enviar los datos a la cola, no esta implementado aun 
-        //primero se esta implementando la parte de entrega de mensajes sin un 
-        //mailbox asociado
-        //"NOT IMPLEMENTED YET";
+
         try {
-            
+            Process send_process = this.getProcessByID(this.command.getProcessID());
+            if(send_process.getBlocked() == false){
+                this.indirectMessage(send_process);
+            }
+            else{
+                this.output_message = this.time+" ERROR: El mensaje '"+ command.getMessage()
+                    +"' no se ha enviado a '"+this.command.getDestination() + "'"
+                    + " debido a que el proceso emisor '" + this.command.getProcessID()
+                    + "' se encuentra bloqueado \n\n";
+            }           
         }
         catch(Exception e) {
-            
+            this.output_message = this.time+" ERROR: El identificador '"
+                    + this.command.getProcessID()+ "' no coincide con ningun proceso \n\n";            
         }
-        
+        this.saveLogMessSProcessSend();    //save the log message in the send process
+        this.saveLogMessQueue();           //save the log message in the receiving queue
     }
- 
+
+       //create a message and send it to the destination mailbox
+    public void indirectMessage(Process send_process){
+        Mailbox destination_mailbox = this.getMailboxByID(this.command.getDestination());
+        Message message = this.createMessageIndirectMode(send_process);
+        this.sendMessageIndirectMode(message, destination_mailbox, send_process);
+    } 
+    
     //Create a message ONLY for the indirect mode 
     public Message createMessageIndirectMode(Process send_process){
         Message message = new Message(send_process, 
                 this.command.getMessage(), 1, this.time);
         return message;
-    }    
-
-     public void IndirectReceiveOpt(){
-        //Aqui se preguntan las condiciones que deben ser preguntadas para
-        //decidir como enviar los datos a la cola, no esta implementado aun 
-        //primero se esta implementando la parte de entrega de mensajes sin un 
-        //mailbox asociado
-        //"NOT IMPLEMENTED YET";
     }
     
+    public Boolean verifyQueue(Mailbox mailbox) {
+        
+        int queue_available = mailbox.getQueue().size();
+        if (queue_available < this.largo_cola){
+            return true;}
+        else {
+        return false;}
+    }
+
+    //Send a message  ONLY for the indirect mode 
+    public void sendMessageIndirectMode(Message message, Mailbox destination_mailbox, 
+            Process send_process) {
+        try{
+            /*Receive available. Queue, exists, not full*/
+            Boolean queue_notfull = verifyQueue(destination_mailbox);
+            if (queue_notfull) {
+                String message_local = message.getMessage();
+                this.setOutput_message(this.time+" EXITOSO: El mensaje '"+ message_local
+                        +"' enviado por el proceso '"+this.command.getProcessID()+ "'"
+                        + " ha sido ingresado a la cola '" + this.command.getDestination() 
+                        + "' de forma exitosa \n\n");
+                //meter en la cola
+                destination_mailbox.getQueue().add(message);  
+                
+                if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
+                        send_process.setReady(true); 
+                }
+                else if(sincr_send_opt == ConfigOptions.SEND_BLOCK.option){
+                    send_process.setBlocked(true);
+                    send_process.setReady(false); 
+                }
+                send_process.setRunning(false);
+                this.processes.set(this.processes.indexOf(send_process), send_process);                
+            }
+            else {
+                this.output_message = this.time+" ERROR: No se ha podido ingresar el"
+                    + " mensaje '"+ message.getMessage()+ "' enviado por '"
+                    +this.command.getProcessID() + "' al mailbox '"
+                    +this.command.getDestination() + " debido a que el mailbox "
+                    + "se encuentra lleno. \n\n'";                
+            }
+
+        }        
+        catch(Exception e){
+
+            this.output_message = this.time+" ERROR: No se ha podido ingresar el"
+                    + " mensaje '"+ message.getMessage()+ "' enviado por '"
+                    +this.command.getProcessID() + "' al mailbox '"
+                    +this.command.getDestination() + " porque el receptor no existe "
+                    + "o no es un mailbox. \n\n";
+        }
+
+    }
+    
+    public void saveLogMessQueue() {
+        try {
+            Mailbox destination_mailbox = this.getMailboxByID(this.command.getDestination());
+            String extra_message = "MAILBOX ESTADO: Tamaño: "
+                    + destination_mailbox.getQueue().size() + " , Capacidad:"
+                    + this.largo_cola+"\n";
+            this.messageLog.saveLogMessage(extra_message+this.output_message);
+            this.mailboxes.set(this.mailboxes.indexOf(destination_mailbox), destination_mailbox);
+        }
+        catch (Exception e) {
+            
+        }
+    }
+    
+    //RECEIVE MODE ----------------- 
+     public void IndirectReceiveOpt(){
+        try {
+            Process receive_process = this.getProcessByID(this.command.getProcessID());
+            Mailbox source_mailbox = this.getMailboxByID(this.command.getSource());
+            if(receive_process.getBlocked() == false){
+                
+                /*if(this.command.getCommand_type() == CommandTypes.INDIRECT_STATIC.type)*/
+                    this.removeQueueImplicit(receive_process);
+                /*else if(this.command.getCommand_type() == CommandTypes.INDIRECT_DINAMIC.type)*/
+                    this.removeQueueExplicit(source_mailbox, receive_process);
+            }
+        }
+        catch (Exception e) {
+            
+        }
+    }
+
+    /*Removes message from Queue in Implicit mode
+     
+     */
+    public void  removeQueueImplicit(Process receive_process) {
+        
+    }
+ 
+    public void  removeQueueExplicit(Mailbox source_mailbox, Process receive_process) {
+        
+    }
+        
     //Finds mailbox by ID 
     public Mailbox getMailboxByID(String ID){
         Mailbox mail_find = null;
@@ -646,6 +748,10 @@ public class ProcessController {
 
     public ArrayList<Mailbox> getMailboxes() {
         return mailboxes;
+    }
+
+    public void setOutput_message(String output_message) {
+        this.output_message = output_message;
     }
 
     public String getOutput_message() {

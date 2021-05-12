@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class MessageLog {
     
     private ArrayList<Message> messages = new ArrayList<Message>();
+    private ArrayList<String> log_messages = new ArrayList<String>();
 
     public ArrayList<Message> getMessages() {
         return messages;
@@ -23,6 +24,17 @@ public class MessageLog {
         this.messages = messages;
     }
 
+    public ArrayList<String> getLog_messages() {
+        return log_messages;
+    }
+
+    public void setTexts(ArrayList<String> texts) {
+        this.log_messages = texts;
+    }
+    
+    public void saveLogMessage(String message){
+        this.log_messages.add(message);
+    }
     public MessageLog() {
     }
 

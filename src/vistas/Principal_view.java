@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.swing.ToolTipManager;
 import modelos.Process;
 import modelos.Mailbox;
+import modelos.MessageLog;
 import utiles.ConfigOptions;
 import utiles.HelpMessages;
 import utiles.ProcessController;
@@ -302,7 +303,8 @@ public class Principal_view extends javax.swing.JFrame {
         // TODO add your handling code here:
         String mailboxID = cb_colas.getSelectedItem().toString();
         Mailbox mailbox_Selected = this.configurador.getMailboxByID(mailboxID);
-        MailboxLog_view mailboxlog_v = new MailboxLog_view (mailbox_Selected);
+        MessageLog log_Selected = this.configurador.getMessageLog();
+        MailboxLog_view mailboxlog_v = new MailboxLog_view (mailbox_Selected, log_Selected);
         mailboxlog_v.setVisible(true);
         
     }//GEN-LAST:event_log_cola_btnActionPerformed
