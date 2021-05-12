@@ -650,21 +650,22 @@ public class ProcessController {
         try {
             Process receive_process = this.getProcessByID(this.command.getProcessID());
             Mailbox source_mailbox = this.getMailboxByID(this.command.getSource());
+            Message pending_message = (Message) source_mailbox.getQueue().element();
             if (!source_mailbox.getQueue().isEmpty())
             {
                 if(receive_process.getBlocked() == false){
                     if (this.indirect_opt == ConfigOptions.INDIRECT_STATIC.option) {
 
-                        this.removeQueueStatic(receive_process);
+                        this.removeQueueStatic(source_mailbox, receive_process, pending_message);
                     }
                     else if (this.indirect_opt == ConfigOptions.INDIRECT_DINAMIC.option) {
 
-                        this.removeQueueDynamic(source_mailbox, receive_process);
+                        this.removeQueueDynamic(source_mailbox, receive_process, pending_message);
                     }
                 }
                 else {
                     //receiving process is blocked
-                    this.output_message = this.time+" ERROR: El mensaje '"+ command.getMessage()
+                    this.output_message = this.time+" ERROR: El mensaje '"+ pending_message.getMessage()
                         +"' no se ha liberado de '"+ source_mailbox.getMailbox_id() + "'"
                         + " debido a que el proceso receptor '" + receive_process.getProcess_id()
                         + "' se encuentra bloqueado \n\n";                
@@ -686,7 +687,7 @@ public class ProcessController {
     }
 
     //Removes message from Queue in Static mode
-    public void  removeQueueStatic(Process receive_process) {
+    public void  removeQueueStatic(Mailbox source_mailbox, Process receive_process, Message pending_message) {
         //try {
             if (this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option 
                     || this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option) {
@@ -695,22 +696,24 @@ public class ProcessController {
                 receive_process.setRunning(false);
                 receive_process.setUnblockProcessID(this.command.getSource());
                 
-                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ pending_message.getMessage()
                         +"' en la cola '"+ command.getSource()+ "'"
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
                 //sacar cola
+                source_mailbox.getQueue().poll();
                 
             }
             else if (this.sincr_receive_opt == ConfigOptions.RECEIVE_NONBLOCKIN.option){
                 
-                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ pending_message.getMessage()
                         +"' en la cola '"+ command.getSource()+ "'"
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
                 //sacar cola
+                source_mailbox.getQueue().poll();
             }
             
         /*}
@@ -720,7 +723,7 @@ public class ProcessController {
     }
  
     //Removes message from Queue in Dynamic mode
-    public void  removeQueueDynamic(Mailbox source_mailbox, Process receive_process) {
+    public void  removeQueueDynamic(Mailbox source_mailbox, Process receive_process, Message pending_message) {
         //try {
             if (this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option 
                     || this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option) {
@@ -729,22 +732,24 @@ public class ProcessController {
                 receive_process.setRunning(false);
                 receive_process.setUnblockProcessID(this.command.getSource());
                 
-                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ pending_message.getMessage()
                         +"' en la cola '"+ command.getSource()+ "'"
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
                 //sacar cola
+                source_mailbox.getQueue().poll();
                 
             }
             else if (this.sincr_receive_opt == ConfigOptions.RECEIVE_NONBLOCKIN.option){
                 
-                this.output_message = this.time+" EXITOSO: El mensaje '"+ command.getMessage()
+                this.output_message = this.time+" EXITOSO: El mensaje '"+ pending_message.getMessage()
                         +"' en la cola '"+ command.getSource()+ "'"
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
                 //sacar cola
+                source_mailbox.getQueue().poll();
             }         
         /*}
         catch (Exception e) {
