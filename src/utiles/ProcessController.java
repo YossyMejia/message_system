@@ -253,7 +253,7 @@ public class ProcessController {
                         + " se ha entregado al proceso '" + this.command.getDestination() 
                         + "' de forma exitosa \n\n";
 
-                this.sendSignalReceive(destination_process, message);
+                this.sendSignalReceive(destination_process, send_process, message);
 
                 if(sincr_send_opt == ConfigOptions.SEND_NONBLOCKIN.option){
                         send_process.setReady(true); 
@@ -300,21 +300,28 @@ public class ProcessController {
     }
     
     //Send a signal to unlock the receive process
-    public void sendSignalReceive(Process process, Message message){
+    public void sendSignalReceive(Process destination_process, Process send_process, 
+            Message message){
         if(this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option ){
-            process.setBlocked(false);
-            process.setReady(false);
+            destination_process.setBlocked(false);
+            destination_process.setReady(false);
         }
-        else if(this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option){
-           process.setBlocked(false);
-           process.setReady(false);
-           saveLogMessRTFA(process, message);
+        else if(this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option 
+                && destination_process.getBlocked() == true){
+           if(destination_process.getUnblockProcessID().equals("ANYONE")
+               || destination_process.getUnblockProcessID().equals(send_process.getProcess_id())){
+               send_process.setBlocked(false);
+               destination_process.setBlocked(false);
+               destination_process.setReady(false);
+               saveLogMessRTFA(destination_process, message);
+           }
         }
         else{
-           process.setReady(true);
+           destination_process.setReady(true);
         }
-        process.setRunning(false);
-        this.processes.set(this.processes.indexOf(process), process);
+        destination_process.setRunning(false);
+        this.processes.set(this.processes.indexOf(send_process), send_process);
+        this.processes.set(this.processes.indexOf(destination_process), destination_process);
     }
             
     //Save the log messages in the send and destination process, ONLY for the direct mode 
@@ -352,7 +359,7 @@ public class ProcessController {
                    +" EXITOSO: El mensaje '"+ message.getMessage()
                    +"' enviado por el proceso '"+ message.getSender().getProcess_id()+ "'"
                    + " se ha leido por el proceso '" + process.getProcess_id()
-                   + "' de forma exitosa";
+                   + "' de forma exitosa\n";
             String extra_message = "PROCESO_ESTADO: Bloqueado: "
                     + process.getBlocked() + " , Preparado: "
                     + process.getReady() + " , Corriendo: "

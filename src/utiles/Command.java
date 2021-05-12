@@ -116,6 +116,8 @@ public class Command {
         this.processID = this.extractProcessID();
         this.destination = this.extractFirstAtribute();
         this.message = this.extractSecondAtribute();
+        if(this.processID.equals(this.destination))
+            this.correct = false;
     }
     
     //Asign the extracted information of the command in the variables
@@ -123,6 +125,8 @@ public class Command {
         this.command_type = CommandTypes.RECEIVE_EXPLICIT.type;
         this.processID = this.extractProcessID();
         this.source = this.extractUniqueAtribute();
+        if(this.processID.equals(this.source))
+            this.correct = false;
     }
     
     //Asign the extracted information of the command in the variables

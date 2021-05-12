@@ -66,7 +66,7 @@ public class ProcessLog_view extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, -1, -1));
 
-        proceso_status_lable.setFont(new java.awt.Font("Dialog", 0, 10)); // NOI18N
+        proceso_status_lable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         proceso_status_lable.setForeground(new java.awt.Color(0, 0, 0));
         proceso_status_lable.setText("STATUS_INFO");
         jPanel1.add(proceso_status_lable, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 20, 620, 30));
