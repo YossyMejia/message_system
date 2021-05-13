@@ -572,6 +572,58 @@ public class ProcessController {
         return false;}
     }
 
+    //Save a log message in the receive process that was in TFA mode. Indirect mode
+    public void saveLogMessRTFAIndirect(Mailbox source_mailbox, Process process, Message message){
+       try{
+           this.output_message = this.time
+                   +" EXITOSO: El mensaje '"+ message.getMessage()
+                   +"' enviado por el proceso '"+ message.getSender().getProcess_id()+ "'"
+                   + " a traves del mailbox '"  + source_mailbox.getMailbox_id()+ "'"
+                   + " se ha leido por el proceso '" + process.getProcess_id()
+                   + "' de forma exitosa\n";
+            String extra_message = "PROCESO_ESTADO: Bloqueado: "
+                    + process.getBlocked() + " , Preparado: "
+                    + process.getReady() + " , Corriendo: "
+                    + process.getRunning() +"\n";
+            process.getBuffer_messages().remove(message);
+            //System.out.println(process.getBuffer_messages().get(0));
+            process.saveLogMessage(extra_message+this.output_message);
+            this.processes.set(this.processes.indexOf(process), process);
+        }
+        catch(Exception e){}
+    }
+    
+    //Send a signal to unlock the send process
+    public void sendSignalSourceIndirect(Process process){
+        if(this.sincr_send_opt == ConfigOptions.SEND_BLOCK.option){
+            process.setBlocked(false);
+        }
+        process.setReady(true);
+        process.setRunning(false);
+        this.processes.set(this.processes.indexOf(process), process);
+    }    
+    
+    //Send a signal to unlock the receive process
+    public void sendSignalReceiveIndirect(Process destination_process,  
+            Message message){
+        if(this.sincr_receive_opt == ConfigOptions.RECEIVE_BLOCKING.option ){
+            destination_process.setBlocked(false);
+            destination_process.setReady(false);
+        }
+        else if(this.sincr_receive_opt == ConfigOptions.RECEIVE_TFA.option 
+                && destination_process.getBlocked() == true){
+               Process send_process = message.getSender();
+               send_process.setBlocked(false);
+               destination_process.setBlocked(false);
+               destination_process.setReady(false);
+        }
+        else{
+           destination_process.setReady(true);
+        }
+        destination_process.setRunning(false);
+        this.processes.set(this.processes.indexOf(destination_process), destination_process);
+    }    
+    
     //Send a message  ONLY for the indirect mode 
     public void sendMessageIndirectMode(Message message, Mailbox destination_mailbox, 
             Process send_process) {
@@ -668,7 +720,7 @@ public class ProcessController {
                     this.output_message = this.time+" ERROR: El mensaje '"+ pending_message.getMessage()
                         +"' no se ha liberado de '"+ source_mailbox.getMailbox_id() + "'"
                         + " debido a que el proceso receptor '" + receive_process.getProcess_id()
-                        + "' se encuentra bloqueado \n\n";                
+                        + "' se encuentra bloqueado \n\n";        
                 }
             }
             else {
@@ -679,8 +731,8 @@ public class ProcessController {
             }
         }
         catch (Exception e) {
-            this.output_message = this.time+" ERROR: El identificador '"
-                    + this.command.getSource()+ "' no coincide con ningun mailbox \n\n";            
+            this.output_message = this.time+" ERROR: En modo indirecto '"
+                    + "' debe indicar un mailbox. \n\n";            
         }
         this.saveLogMessRProcessReceive();    //save the log message in the receive process
         this.saveLogMessSourceQueue();        //save the log message in the source queue
@@ -701,6 +753,8 @@ public class ProcessController {
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
+                Process send_process = pending_message.getSender();
+                this.sendSignalSourceIndirect(send_process);
                 //sacar cola
                 source_mailbox.getQueue().poll();
                 
@@ -712,6 +766,8 @@ public class ProcessController {
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
+                Process send_process = pending_message.getSender();
+                this.sendSignalSourceIndirect(send_process);
                 //sacar cola
                 source_mailbox.getQueue().poll();
             }
@@ -737,6 +793,8 @@ public class ProcessController {
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
+                Process send_process = pending_message.getSender();
+                this.sendSignalSourceIndirect(send_process);
                 //sacar cola
                 source_mailbox.getQueue().poll();
                 
@@ -748,6 +806,8 @@ public class ProcessController {
                         + " se ha leido por el proceso '" + this.command.getProcessID()
                         + "' de forma exitosa \n\n";
                 
+                Process send_process = pending_message.getSender();
+                this.sendSignalSourceIndirect(send_process);
                 //sacar cola
                 source_mailbox.getQueue().poll();
             }         

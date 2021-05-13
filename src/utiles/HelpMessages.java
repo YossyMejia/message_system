@@ -53,9 +53,12 @@ public enum HelpMessages {
             + "especifica quien debe ser el proceso del que se recibe un mensaje <br>"
             + "y si es implicito el proceso leera el primer mensaje almacenado en el buffer.</html>" ),
     
-    ADDRESSING_INDIRECT ("<html>NO SE</html>" ),
+    ADDRESSING_INDIRECT ("<html>Direccionamiento indirecto estatico es que  <br>"
+            + " existe una cola por proceso receptor mientras que en dinamico <br>"
+            + " un proceso puede tomar mensajes de varias colas.</html>" ),
     
     COMMAND_HELP ("<html>La sintaxis de los comandos es la siguiente: <br>"
+            + "Modo Directo: <br>"
             + "- pID.send(pID2, message) comando para enviar mensaje, pID es el <br>"
             + "proceso que envia el mensaje, pID2 es el proceso que lo recibe y <br> "
             + "message es el mensaje a enviar.<br>"
@@ -64,6 +67,14 @@ public enum HelpMessages {
             + "- pID.receive(pID2) comando para hacer un receive explicito, donde <br>"
             + "pID es el proceso que desea hacer el receive y pID2 el proceso del que"
             + "desea recibir. <br>"
+            + "Modo Indirecto: <br>"
+            + "- pID.send(mID2, message) comando para enviar mensaje, pID es el <br>"
+            + "proceso que envia el mensaje, mID2 es el mailbox que lo recibe y <br> "
+            + "message es el mensaje a enviar.<br>"
+            + "- pID.receive(mID2) comando para hacer un receive, donde <br>"
+            + "pID es el proceso que desea hacer el receive y mID2 el mailbox del que <br>"
+            + "desea tomar un mensaje. <br>"
+            + "Lectura de archivos: <br>"
             + "- read() despues de cargar un archivo de texto se ejecutan sus comandos, <br>"
             + "se ejecutaran los N comandos especificados por el usuario en el apartado <br>"
             + "de cargar documento.<br>"
