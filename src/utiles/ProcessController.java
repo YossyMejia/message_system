@@ -105,10 +105,16 @@ public class ProcessController {
                     command_v.writeInConsole(this.output_message); //write in the view console
                 }
                 else{
+                    if(this.addressing_type == ConfigOptions.ADDRESSING_INDIRECT.option) {
+                     String message = time+" Debe ingresar el nombre de la cola. \n\n";
+                    command_v.writeInConsole(message); //write in the view console                       
+                    }
+                    else if (this.addressing_type == ConfigOptions.ADDRESSING_DIRECT.option) {
                     String message = time+" Tipo comando -> RECEIVE IMPLICITO: "
                             + "comando invalido la configuracion esta establecida "
                             + "en receive explicito y el comando es tipo implicito\n\n";
                     command_v.writeInConsole(message); //write in the view console
+                    }
                 }
                 
             }
@@ -707,8 +713,15 @@ public class ProcessController {
             {
                 if(receive_process.getBlocked() == false){
                     if (this.indirect_opt == ConfigOptions.INDIRECT_STATIC.option) {
-
-                        this.removeQueueStatic(source_mailbox, receive_process, pending_message);
+                        if (StaticVerificator (source_mailbox, receive_process)) {
+                            this.removeQueueStatic(source_mailbox, receive_process, pending_message);
+                            this.sendSignalReceiveIndirect(receive_process, pending_message); 
+                        }
+                        else {
+                            this.output_message = this.time+" ERROR: En modo estático el índice "
+                            + " del proceso y del mailbox debe ser el mismo. \n\n";
+                             this.saveLogMessRProcessReceive(); 
+                        }
                     }
                     else if (this.indirect_opt == ConfigOptions.INDIRECT_DINAMIC.option) {
 
@@ -716,14 +729,20 @@ public class ProcessController {
                     }
                 }
                 else {
-                    //receiving process is blocked
-                    this.output_message = this.time+" ERROR: El mensaje '"+ pending_message.getMessage()
-                        +"' no se ha liberado de '"+ source_mailbox.getMailbox_id() + "'"
-                        + " debido a que el proceso receptor '" + receive_process.getProcess_id()
-                        + "' se encuentra bloqueado \n\n";        
+                    
+                    if (this.indirect_opt == ConfigOptions.INDIRECT_STATIC.option) {
+
+                        this.removeQueueStatic(source_mailbox, receive_process, pending_message);
+                        this.sendSignalReceiveIndirect(receive_process, pending_message); 
+                    }
+                    else if (this.indirect_opt == ConfigOptions.INDIRECT_DINAMIC.option) {
+
+                        this.removeQueueDynamic(source_mailbox, receive_process, pending_message);
+                        this.sendSignalReceiveIndirect(receive_process, pending_message);
+                    }
                 }
             }
-            else {
+            else if (source_mailbox.getQueue().isEmpty()){
                 //source mailbox is empty
                 this.output_message = this.time+" ERROR: No se puede "
                     +" recibir ningun mensaje del mailbox '"+ this.command.getSource() + "'"
@@ -731,8 +750,9 @@ public class ProcessController {
             }
         }
         catch (Exception e) {
-            this.output_message = this.time+" ERROR: En modo indirecto '"
-                    + "' debe indicar un mailbox. \n\n";            
+            this.output_message = this.time+" ERROR: No se puede "
+                    +" recibir ningun mensaje del mailbox '"+ this.command.getSource() + "'"
+                    + " debido a que se encuentra vacio o no existe \n\n";           
         }
         this.saveLogMessRProcessReceive();    //save the log message in the receive process
         this.saveLogMessSourceQueue();        //save the log message in the source queue
@@ -816,7 +836,56 @@ public class ProcessController {
             
         }*/      
     }
+    
+    //Verifica si el index de la cola y del proceso son el mismo
+    public Boolean StaticVerificator(Mailbox mailbox, Process process) {
         
+        int indexProcess = this.getProcesos().indexOf(process);
+        int indexMailbox = this.getMailboxes().indexOf(mailbox);
+        
+        if (indexProcess == indexMailbox) {
+            
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    //0 si son de igual largo, 1 si hay mas procesos que mailboxes
+    //2 si hay mas mailboxes
+    public int LengthVerificator () {
+        
+        int lengthProcess = this.getProcesos().size();
+        int lengthMailbox = this.getMailboxes().size();
+        
+        if (lengthProcess == lengthMailbox) {
+            return 0;
+        }
+        else if (lengthProcess > lengthMailbox) {
+            return 1;
+        }
+        else {
+            return 2;
+        }
+    }
+    
+    //0 si el index del proceso es mayor
+    //1 si es menor
+    public int ProcessVerificator (Mailbox mailbox, Process process) {
+        
+        int indexProcess = this.getProcesos().indexOf(process);
+        int lengthMailbox = this.getMailboxes().size();
+
+        if (indexProcess > (lengthMailbox -1)) {
+            return 0;
+        }
+        else {
+            
+            return 1;
+        }        
+    }
+    
     //Finds mailbox by ID 
     public Mailbox getMailboxByID(String ID){
         Mailbox mail_find = null;

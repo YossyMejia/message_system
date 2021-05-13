@@ -532,6 +532,9 @@ public class Configuracion_view extends javax.swing.JFrame {
         else if(direcc_cb2.isSelected()){
             this.addressing_direct_receive = direcc_cb2.getText();
         }
+        else {
+            this.addressing_direct_receive = direcc_cb3.getText();
+        }
         
         //Set of the options to the message
         this.message_length_type = form_largo_opciones.getSelectedItem().toString();

@@ -28,7 +28,9 @@ public enum HelpMessages {
             + "leida, la opcion de FIFO <br> trabaja de la forma que su nombre lo indica "
             + "donde el primer mensaje en entrar es <br> el primero en salir de la cola, "
             + "la otra opcion Priority elige el mensaje en salir <br> segun su nivel "
-            + "de prioridad, los de prioridad mas alta  son los primeros en salir.</html>" ),
+            + "de prioridad, los de prioridad mas alta  son los primeros en salir. <br>"
+            + "Si el modo es estático el índice del proceso y del mailbox <br>"
+            + "deben ser el mismo. </html>" ),
     
     PROCESS_QUANTITY ("<html>Se ingresa la cantidad de procesos que se desea"
             + " que tenga la aplicacion.</html>" ),

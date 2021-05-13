@@ -568,9 +568,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="send_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -592,9 +589,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="send_help_button2">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -616,9 +610,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="format_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -640,9 +631,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="format_help_button2">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -667,9 +655,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="queueDisc_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -691,9 +676,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="cant_proc_help">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -715,9 +697,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="tam_cola_help">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -739,9 +718,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="cant_mailbox_help">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -763,9 +739,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="direcc_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -790,9 +763,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="direcc_receive_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -817,9 +787,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="direcc_indirect_help_button">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto 1\message_system\src\Imagenes\help_icon.png"/>
-                </Property>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
@@ -846,9 +813,6 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="E:\User\Documentos\Semestres\S1 - 2021\SO\Proyecto 1\Proyecto_1\src\Imagenes\fondo.jpg"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="jLabel1"/>
           </Properties>
           <Constraints>
